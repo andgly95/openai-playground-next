@@ -15,6 +15,7 @@ const ChatSection: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isApiError, setIsApiError] = useState(false);
   const [isChangingModel, setIsChangingModel] = useState(false);
   const [model, setModel] = useState(modelOptions[0]);
 
@@ -49,6 +50,7 @@ const ChatSection: React.FC = () => {
         setIsLoading(false);
       } catch (error) {
         console.error("Error:", error);
+        setIsApiError(true);
         setIsLoading(false);
       }
     };
@@ -91,6 +93,9 @@ const ChatSection: React.FC = () => {
   return (
     <>
       <div className="bg-black p-2 rounded-md">
+        {isApiError && !messages.length && (
+          <div className="text-red-500 text-center">API Error</div>
+        )}
         {messages.map((message, index) => (
           <div key={index} className="mb-2 text-white">
             <strong

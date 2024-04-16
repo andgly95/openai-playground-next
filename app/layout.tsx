@@ -20,10 +20,23 @@ export default function RootLayout({
 
       <body
         className={
-          inter.className + " bg-gradient-to-r from-neutral-700 to-neutral-900"
+          inter.className +
+          " bg-gradient-to-r from-neutral-700 to-neutral-900 min-h-screen flex flex-col"
         }
       >
+        <header className="bg-neutral-800 py-4">
+          <div className="container mx-auto px-4">
+            <h1 className="text-4xl font-bold text-white">
+              <span className="text-indigo-400">Imagi</span>Chat
+            </h1>
+          </div>
+        </header>
         {children}
+        <footer className="bg-neutral-800 py-4 mt-8">
+          <div className="container mx-auto px-4 text-center text-gray-400">
+            &copy; {new Date().getFullYear()} ImagiChat. All rights reserved.
+          </div>
+        </footer>
       </body>
     </html>
   );

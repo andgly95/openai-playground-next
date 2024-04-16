@@ -94,7 +94,8 @@ const ImageGenerator: React.FC = () => {
                 key={index}
                 src={image}
                 alt={`Generated Image ${index + 1}`}
-                className="w-full h-auto rounded-md"
+                className="w-full h-auto rounded-md cursor-pointer"
+                onClick={(e) => setGeneratedImage(image)}
               />
             ))}
           </div>

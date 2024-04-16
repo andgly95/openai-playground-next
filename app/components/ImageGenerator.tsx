@@ -45,17 +45,8 @@ const ImageGenerator: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  const handleModelClick = () => {
-    const nextModel = modelOptions.find((option) => option !== model);
-    if (nextModel) {
-      setModel(nextModel);
-    }
-  };
-
   return (
-    <GlassmorphicCard>
-      <h2 className="text-2xl font-bold text-white">Image Generator</h2>
+    <GlassmorphicCard title="Image Generator">
       <input
         type="text"
         value={prompt}

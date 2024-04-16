@@ -42,7 +42,7 @@ const ChatSection: React.FC = () => {
 
         const data = await response.text();
         const assistantMessage: Message = {
-          role: "Assistant",
+          role: "assistant",
           content: data,
         };
 
@@ -62,7 +62,7 @@ const ChatSection: React.FC = () => {
       role: "user",
       content: inputText,
     };
-
+    setIsLoading(true);
     try {
       const response = await fetch("http://localhost:8080/generate_chat", {
         method: "POST",
@@ -76,29 +76,29 @@ const ChatSection: React.FC = () => {
       });
 
       const data = await response.text();
-      const assistantMessage: Message = {
-        role: "assistant",
-        content: data,
-      };
 
-      setMessages([...messages, newMessage, assistantMessage]);
+      setMessages([
+        ...messages,
+        newMessage,
+        { role: "assistant", content: data },
+      ]);
       setInputText("");
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   return (
-    <GlassmorphicCard>
-      <h2 className="text-2xl font-bold text-white">Chat Section</h2>
+    <GlassmorphicCard title="Chat Section">
       <div className="bg-black p-2 rounded-md">
         {messages.map((message, index) => (
           <div key={index} className="mb-2 text-white">
             <strong
               className={
-                message.role === "Assistant"
-                  ? "text-green-500"
-                  : "text-yellow-100"
+                message.role === "assistant"
+                  ? "text-green-500 capitalize"
+                  : "text-yellow-100 capitalize"
               }
             >
               {message.role}:

@@ -3,11 +3,16 @@
 "use client";
 
 import React, { useState } from "react";
+import GlassmorphicCard from "./GlassmorphicCard";
+
+const modelOptions = ["dall-e-3", "dall-e-2"];
 
 const ImageGenerator: React.FC = () => {
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [model, setModel] = useState(modelOptions[0]);
+  const [isChangingModel, setIsChangingModel] = useState(false);
 
   const handleGenerateImage = async () => {
     try {
@@ -41,21 +46,28 @@ const ImageGenerator: React.FC = () => {
     }
   };
 
+  const handleModelClick = () => {
+    const nextModel = modelOptions.find((option) => option !== model);
+    if (nextModel) {
+      setModel(nextModel);
+    }
+  };
+
   return (
-    <div className="p-4 bg-gray">
-      <h2 className="text-2xl font-bold mb-4">Image Generator</h2>
+    <GlassmorphicCard>
+      <h2 className="text-2xl font-bold text-white">Image Generator</h2>
       <input
         type="text"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        className="w-full border border-gray-300 p-4 rounded-md mb-2"
+        className="w-full border border-gray-300 p-4 rounded-md"
       />
       <button
         onClick={handleGenerateImage}
-        className={`w-full bg-blue-500 text-white p-4 rounded-md ${
+        className={`w-full bg-indigo-500 text-white p-4 rounded-full ${
           !prompt || isLoading
             ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-blue-600"
+            : "hover:bg-indigo-600"
         }`}
         disabled={isLoading}
       >
@@ -64,7 +76,30 @@ const ImageGenerator: React.FC = () => {
       {generatedImage && (
         <img src={generatedImage} alt="Generated" className="mt-4" />
       )}
-    </div>
+      {!isChangingModel ? (
+        <button
+          className="flex text-white text-sm"
+          onClick={(e) => setIsChangingModel(true)}
+        >
+          {model}
+        </button>
+      ) : (
+        <select
+          value={model}
+          onChange={(e) => {
+            setModel(e.target.value);
+            setIsChangingModel(false);
+          }}
+          className="w-full border border-gray-300 bg-neutral-400 px-4 py-2 rounded-md"
+        >
+          {modelOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      )}
+    </GlassmorphicCard>
   );
 };
 

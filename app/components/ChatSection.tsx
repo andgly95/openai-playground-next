@@ -3,16 +3,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import GlassmorphicCard from "./GlassmorphicCard";
 
 interface Message {
   role: string;
   content: string;
 }
 
+const modelOptions = ["gpt-4-turbo", "gpt-3.5-turbo"];
+
 const ChatSection: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isChangingModel, setIsChangingModel] = useState(false);
+  const [model, setModel] = useState(modelOptions[0]);
 
   useEffect(() => {
     const fetchInitialMessage = async () => {
@@ -28,7 +33,8 @@ const ChatSection: React.FC = () => {
             messages: [
               {
                 role: "system",
-                content: "You are a helpful assistant.",
+                content:
+                  "You are playing a game where a human battles an AI with a chat and image generator. First come up with a prompt that the user can enter into the image generator",
               },
             ],
           }),
@@ -36,7 +42,7 @@ const ChatSection: React.FC = () => {
 
         const data = await response.text();
         const assistantMessage: Message = {
-          role: "assistant",
+          role: "Assistant",
           content: data,
         };
 
@@ -83,33 +89,67 @@ const ChatSection: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Chat Section</h2>
-      <div className="mb-4">
+    <GlassmorphicCard>
+      <h2 className="text-2xl font-bold text-white">Chat Section</h2>
+      <div className="bg-black p-2 rounded-md">
         {messages.map((message, index) => (
-          <div key={index} className="mb-2">
-            <strong>{message.role}:</strong> {message.content}
+          <div key={index} className="mb-2 text-white">
+            <strong
+              className={
+                message.role === "Assistant"
+                  ? "text-green-500"
+                  : "text-yellow-100"
+              }
+            >
+              {message.role}:
+            </strong>{" "}
+            {message.content}
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        className="border border-gray-300 px-4 py-2 rounded-md"
-      />
-      <button
-        onClick={handleSendMessage}
-        className={`bg-blue-500 text-white px-4 py-2 rounded-md ml-2 ${
-          !inputText || isLoading
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-blue-600"
-        }`}
-        disabled={!inputText || isLoading}
-      >
-        Send
-      </button>
-    </div>
+      <div className="flex">
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          className="w-full border border-gray-300 bg-neutral-400 px-4 py-2 rounded-md"
+        />
+        <button
+          onClick={handleSendMessage}
+          className={`bg-indigo-500 text-white px-8 py-2 rounded-md ml-2 ${
+            !inputText || isLoading
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-indigo-600"
+          }`}
+          disabled={!inputText || isLoading}
+        >
+          Send
+        </button>
+      </div>
+      {!isChangingModel ? (
+        <button
+          className="flex text-white text-sm"
+          onClick={(e) => setIsChangingModel(true)}
+        >
+          {model}
+        </button>
+      ) : (
+        <select
+          value={model}
+          onChange={(e) => {
+            setModel(e.target.value);
+            setIsChangingModel(false);
+          }}
+          className="w-full border border-gray-300 bg-neutral-400 px-4 py-2 rounded-md"
+        >
+          {modelOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      )}
+    </GlassmorphicCard>
   );
 };
 

@@ -1,17 +1,28 @@
 import ChatSection from "./components/ChatSection";
+import GlassmorphicCard from "./components/GlassmorphicCard";
 import ImageGenerator from "./components/ImageGenerator";
 
 export default function Home() {
   return (
-    <main className="container mx-auto p-4 lg:py-40">
+    <main className="container mx-auto px-4 py-8 lg:py-16">
       <section className="layout">
-        <h1 className="text-4xl font-bold mb-8 text-white">OpenAI API Demo</h1>
-        <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
-          <div className="w-full lg:w-1/3">
-            <ChatSection />
+        <h1 className="text-4xl font-bold mb-8 text-white">
+          <span className="text-indigo-400">Imagi</span>Chat
+        </h1>
+        <p className="text-xl text-gray-300 mb-12">
+          Unleash your imagination with AI-powered chat and images.
+        </p>
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
+          <div className="lg:w-1/2">
+            <GlassmorphicCard title="Chat with AI">
+              <ChatSection />
+            </GlassmorphicCard>
           </div>
-          <div className="w-full lg:w-2/3">
-            <ImageGenerator />
+
+          <div className="lg:w-1/2">
+            <GlassmorphicCard title="Generate Images">
+              <ImageGenerator />
+            </GlassmorphicCard>
           </div>
         </div>
       </section>

@@ -3,7 +3,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import GlassmorphicCard from "./GlassmorphicCard";
 
 interface Message {
   role: string;
@@ -34,7 +33,7 @@ const ChatSection: React.FC = () => {
               {
                 role: "system",
                 content:
-                  "You are playing a game where a human battles an AI with a chat and image generator. First come up with a prompt that the user can enter into the image generator",
+                  "You are a chatbot. You are designed to assist users with their queries.",
               },
             ],
           }),
@@ -90,7 +89,7 @@ const ChatSection: React.FC = () => {
   };
 
   return (
-    <GlassmorphicCard title="Chat Section">
+    <>
       <div className="bg-black p-2 rounded-md">
         {messages.map((message, index) => (
           <div key={index} className="mb-2 text-white">
@@ -112,11 +111,15 @@ const ChatSection: React.FC = () => {
           type="text"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          className="w-full border border-gray-300 bg-neutral-400 px-4 py-2 rounded-md"
+          onKeyDown={(e) => {
+            e.key === "Enter" && handleSendMessage();
+          }}
+          className="w-full border border-gray-300 bg-neutral-200 px-4 py-2 rounded-l-md"
+          placeholder="Enter a message"
         />
         <button
           onClick={handleSendMessage}
-          className={`bg-indigo-500 text-white px-8 py-2 rounded-md ml-2 ${
+          className={`bg-indigo-500 text-white px-8 py-2 rounded-r-md ${
             !inputText || isLoading
               ? "opacity-50 cursor-not-allowed"
               : "hover:bg-indigo-600"
@@ -149,7 +152,7 @@ const ChatSection: React.FC = () => {
           ))}
         </select>
       )}
-    </GlassmorphicCard>
+    </>
   );
 };
 

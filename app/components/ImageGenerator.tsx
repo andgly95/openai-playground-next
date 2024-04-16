@@ -46,12 +46,15 @@ const ImageGenerator: React.FC = () => {
     }
   };
   return (
-    <GlassmorphicCard title="Image Generator">
-      <input
-        type="text"
+    <>
+      <textarea
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        className="w-full border border-gray-300 p-4 rounded-md"
+        onKeyDown={(e) => {
+          e.key === "Enter" && handleGenerateImage();
+        }}
+        className="w-full border border-gray-300 p-4 pb-16 rounded-md"
+        placeholder="Enter a prompt for the image generator"
       />
       <button
         onClick={handleGenerateImage}
@@ -90,7 +93,7 @@ const ImageGenerator: React.FC = () => {
           ))}
         </select>
       )}
-    </GlassmorphicCard>
+    </>
   );
 };
 

@@ -16,7 +16,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + " bg-neutral-900"}>{children}</body>
+      <link rel="icon" href="/favicon.png" sizes="any" />
+
+      <body
+        className={
+          inter.className + " bg-gradient-to-r from-neutral-700 to-neutral-900"
+        }
+      >
+        {children}
+      </body>
     </html>
   );
 }

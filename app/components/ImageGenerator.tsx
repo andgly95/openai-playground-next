@@ -2,8 +2,7 @@
 
 "use client";
 
-import React, { useState } from "react";
-import GlassmorphicCard from "./GlassmorphicCard";
+import React, { useEffect, useState } from "react";
 
 const modelOptions = ["dall-e-3", "dall-e-2"];
 
@@ -13,6 +12,14 @@ const ImageGenerator: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [model, setModel] = useState(modelOptions[0]);
   const [isChangingModel, setIsChangingModel] = useState(false);
+  const [imageHistory, setImageHistory] = useState<string[]>([]);
+
+  useEffect(() => {
+    const storedHistory = localStorage.getItem("imageHistory");
+    if (storedHistory) {
+      setImageHistory(JSON.parse(storedHistory));
+    }
+  }, []);
 
   const handleGenerateImage = async () => {
     try {
@@ -36,9 +43,13 @@ const ImageGenerator: React.FC = () => {
       }
 
       const data = await response.text();
-      console.log(data);
 
       setGeneratedImage(data);
+      setImageHistory((prevHistory) => [data, ...prevHistory]);
+      localStorage.setItem(
+        "imageHistory",
+        JSON.stringify([data, ...imageHistory])
+      );
       setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
@@ -68,7 +79,26 @@ const ImageGenerator: React.FC = () => {
         Generate Image
       </button>
       {generatedImage && (
-        <img src={generatedImage} alt="Generated" className="mt-4" />
+        <img
+          src={generatedImage}
+          alt="Generated"
+          className="mt-4 border-8 border-white rounded-lg shadow-lg"
+        />
+      )}
+      {imageHistory.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4 text-white">Image History</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {imageHistory.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Generated Image ${index + 1}`}
+                className="w-full h-auto rounded-md"
+              />
+            ))}
+          </div>
+        </div>
       )}
       {!isChangingModel ? (
         <button

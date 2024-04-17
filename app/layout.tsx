@@ -21,7 +21,7 @@ export default function RootLayout({
       <body
         className={
           inter.className +
-          " bg-gradient-to-r from-neutral-700 to-neutral-900 min-h-screen flex flex-col"
+          " bg-neutral-800 bg-gradient-to-r from-neutral-700 to-neutral-900 min-h-screen flex flex-col"
         }
       >
         <header className="bg-neutral-800 py-4">

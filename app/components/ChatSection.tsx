@@ -29,7 +29,7 @@ const ChatSection: React.FC = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
+            model,
             messages: [
               {
                 role: "system",
@@ -71,7 +71,7 @@ const ChatSection: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "gpt-3.5-turbo",
+          model,
           messages: [...messages, newMessage],
         }),
       });

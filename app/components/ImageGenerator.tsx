@@ -30,7 +30,7 @@ const ImageGenerator: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "dall-e-3",
+          model,
           prompt: prompt,
           size: "1024x1024",
           quality: "standard",

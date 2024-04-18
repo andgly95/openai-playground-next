@@ -24,19 +24,22 @@ const ImageGenerator: React.FC = () => {
   const handleGenerateImage = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8080/generate_image", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model,
-          prompt: prompt,
-          size: "1024x1024",
-          quality: "standard",
-          n: 1,
-        }),
-      });
+      const response = await fetch(
+        "https://f759-70-23-243-115.ngrok-free.app/generate_image",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model,
+            prompt: prompt,
+            size: "1024x1024",
+            quality: "standard",
+            n: 1,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

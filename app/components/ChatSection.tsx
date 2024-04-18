@@ -23,22 +23,25 @@ const ChatSection: React.FC = () => {
     const fetchInitialMessage = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("http://localhost:8080/generate_chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model,
-            messages: [
-              {
-                role: "system",
-                content:
-                  "You are a chatbot. You are designed to assist users with their queries.",
-              },
-            ],
-          }),
-        });
+        const response = await fetch(
+          "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model,
+              messages: [
+                {
+                  role: "system",
+                  content:
+                    "You are a chatbot. You are designed to assist users with their queries.",
+                },
+              ],
+            }),
+          }
+        );
 
         const data = await response.text();
         const assistantMessage: Message = {
@@ -65,16 +68,19 @@ const ChatSection: React.FC = () => {
     };
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/generate_chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model,
-          messages: [...messages, newMessage],
-        }),
-      });
+      const response = await fetch(
+        "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model,
+            messages: [...messages, newMessage],
+          }),
+        }
+      );
 
       const data = await response.text();
 

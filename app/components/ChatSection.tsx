@@ -98,12 +98,12 @@ const ChatSection: React.FC = () => {
 
   return (
     <>
-      <div className="bg-black p-2 rounded-md">
+      <div className="bg-black p-2 rounded-md min-h-40">
         {isApiError && !messages.length && (
           <div className="text-red-500 text-center">API Error</div>
         )}
         {messages.map((message, index) => (
-          <div key={index} className="mb-2 text-white">
+          <div key={index} className="mb-2 text-white p-2 rounded-sm">
             <strong
               className={
                 message.role === "assistant"
@@ -125,8 +125,11 @@ const ChatSection: React.FC = () => {
           onKeyDown={(e) => {
             e.key === "Enter" && handleSendMessage();
           }}
-          className="w-full border border-gray-300 bg-neutral-200 px-4 py-2 rounded-l-md"
+          className={`w-full border border-gray-300 bg-neutral-200 px-4 py-2 rounded-l-md ${
+            isLoading && "opacity-50 cursor-not-allowed"
+          }`}
           placeholder="Enter a message"
+          disabled={isLoading}
         />
         <button
           onClick={handleSendMessage}

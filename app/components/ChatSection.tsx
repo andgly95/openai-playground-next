@@ -67,6 +67,7 @@ const ChatSection: React.FC = () => {
       content: inputText,
     };
     setIsLoading(true);
+    setMessages([...messages, newMessage]);
     try {
       const response = await fetch(
         "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
@@ -98,24 +99,35 @@ const ChatSection: React.FC = () => {
 
   return (
     <>
-      <div className="bg-black p-2 rounded-md min-h-40">
+      <div className="bg-gray-900 p-4 rounded-lg min-h-40">
+        {" "}
         {isApiError && !messages.length && (
-          <div className="text-red-500 text-center">API Error</div>
-        )}
+          <div className="text-red-500 text-center mb-4">API Error</div>
+        )}{" "}
         {messages.map((message, index) => (
-          <div key={index} className="mb-2 text-white p-2 rounded-sm">
-            <strong
-              className={
-                message.role === "assistant"
-                  ? "text-green-500 capitalize"
-                  : "text-yellow-100 capitalize"
-              }
-            >
-              {message.role}:
-            </strong>{" "}
-            {message.content}
+          <div key={index} className="mb-4">
+            {" "}
+            <div className="flex items-center mb-1">
+              {" "}
+              <span
+                className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                  message.role === "assistant" ? "bg-blue-500" : "bg-gray-500"
+                }`}
+              ></span>{" "}
+              <strong
+                className={`text-sm font-mono ${
+                  message.role === "assistant"
+                    ? "text-blue-400"
+                    : "text-gray-400"
+                }`}
+              >
+                {" "}
+                {message.role === "assistant" ? "AI" : "User"}{" "}
+              </strong>{" "}
+            </div>{" "}
+            <p className="text-gray-300 text-sm ml-4">{message.content}</p>{" "}
           </div>
-        ))}
+        ))}{" "}
       </div>
       <div className="flex">
         <input

@@ -3,6 +3,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import ModelSelector from "./ModelSelector";
 
 const modelOptions = ["dall-e-3", "dall-e-2"];
 
@@ -114,29 +115,13 @@ const ImageGenerator: React.FC = () => {
           </div>
         </div>
       )}
-      {!isChangingModel ? (
-        <button
-          className="flex text-white text-sm"
-          onClick={(e) => setIsChangingModel(true)}
-        >
-          {model}
-        </button>
-      ) : (
-        <select
-          value={model}
-          onChange={(e) => {
-            setModel(e.target.value);
-            setIsChangingModel(false);
-          }}
-          className="w-full border border-gray-300 bg-neutral-400 px-4 py-2 rounded-md"
-        >
-          {modelOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      )}
+
+      <ModelSelector
+        model={model}
+        isChangingModel={isChangingModel}
+        setModel={setModel}
+        setIsChangingModel={setIsChangingModel}
+      />
     </>
   );
 };

@@ -100,7 +100,7 @@ const ChatSection: React.FC = () => {
 
   return (
     <>
-      <div className="bg-gray-900 p-4 rounded-lg min-h-40">
+      <div className="bg-gray-900 p-4 rounded-lg min-h-40 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
         {" "}
         {isApiError && !messages.length && (
           <div className="text-red-500 text-center mb-4">API Error</div>

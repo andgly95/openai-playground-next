@@ -86,6 +86,11 @@ const ImageGenerator: React.FC = () => {
           src={generatedImage}
           alt="Generated"
           className="mt-4 border-8 border-white rounded-lg shadow-lg"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.onerror = null;
+            target.src = "/missing.png";
+          }}
         />
       )}
       {imageHistory.length > 0 && (
@@ -99,6 +104,11 @@ const ImageGenerator: React.FC = () => {
                 alt={`Generated Image ${index + 1}`}
                 className="w-full h-auto rounded-md cursor-pointer"
                 onClick={(e) => setGeneratedImage(image)}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = "/missing.png";
+                }}
               />
             ))}
           </div>

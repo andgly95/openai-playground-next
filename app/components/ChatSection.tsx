@@ -159,6 +159,7 @@ const ChatSection: React.FC = () => {
 
       <ModelSelector
         model={model}
+        modelOptions={modelOptions}
         isChangingModel={isChangingModel}
         setModel={setModel}
         setIsChangingModel={setIsChangingModel}

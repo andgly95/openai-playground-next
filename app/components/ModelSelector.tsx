@@ -2,6 +2,7 @@ import React from "react";
 
 interface ModelSelectorProps {
   model: string;
+  modelOptions: string[];
   isChangingModel: boolean;
   setModel: (model: string) => void;
   setIsChangingModel: (isChanging: boolean) => void;
@@ -9,12 +10,11 @@ interface ModelSelectorProps {
 
 const ModelSelector: React.FC<ModelSelectorProps> = ({
   model,
+  modelOptions,
   isChangingModel,
   setModel,
   setIsChangingModel,
 }) => {
-  const modelOptions = ["dall-e-3", "dall-e-2"];
-
   return (
     <>
       {!isChangingModel ? (

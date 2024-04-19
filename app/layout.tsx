@@ -1,6 +1,10 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import SSOButton from "./components/SSOButton";
 import "./globals.css";
+import Providers from "./Providers";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,32 +15,34 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <link rel="icon" href="/favicon.png" sizes="any" />
-
       <body
         className={
           inter.className +
           " bg-neutral-800 bg-gradient-to-r from-neutral-700 to-neutral-900 min-h-screen flex flex-col"
         }
       >
-        <header className="bg-neutral-800 py-4">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold text-white">
-              <span className="text-indigo-400">Imagi</span>Chat
-            </h1>
-          </div>
-        </header>
-        {children}
-        <footer className="bg-neutral-800 py-4 mt-8">
-          <div className="container mx-auto px-4 text-center text-gray-400">
-            &copy; {new Date().getFullYear()} ImagiChat. All rights reserved.
-          </div>
-        </footer>
+        <Providers>
+          <header className="bg-neutral-800 py-4">
+            <div className="container mx-auto px-4 flex justify-between items-center">
+              <Link href="/">
+                <h1 className="text-4xl font-bold text-white">
+                  <span className="text-indigo-400">Imagi</span>Chat
+                </h1>
+              </Link>
+              <SSOButton />
+            </div>
+          </header>
+          {children}
+          <footer className="bg-neutral-800 py-4 mt-8">
+            <div className="container mx-auto px-4 text-center text-gray-400">
+              &copy; {new Date().getFullYear()} ImagiChat. All rights reserved.
+            </div>
+          </footer>
+        </Providers>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,13 +12,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <link rel="icon" href="/favicon.png" sizes="any" />
-
       <body
         className={
           inter.className +
@@ -25,10 +23,12 @@ export default function RootLayout({
         }
       >
         <header className="bg-neutral-800 py-4">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold text-white">
-              <span className="text-indigo-400">Imagi</span>Chat
-            </h1>
+          <div className="container mx-auto px-4 flex justify-between items-center">
+            <Link href="/">
+              <h1 className="text-4xl font-bold text-white">
+                <span className="text-indigo-400">Imagi</span>Chat
+              </h1>
+            </Link>
           </div>
         </header>
         {children}

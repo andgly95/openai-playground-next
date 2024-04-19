@@ -149,8 +149,7 @@ const ChatSection: React.FC = () => {
         ))}{" "}
       </div>
       <div className="flex">
-        <input
-          type="text"
+        <textarea
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={(e) => {

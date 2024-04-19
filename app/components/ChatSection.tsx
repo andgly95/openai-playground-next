@@ -19,6 +19,15 @@ const ChatSection: React.FC = () => {
   const [isApiError, setIsApiError] = useState(false);
   const [isChangingModel, setIsChangingModel] = useState(false);
   const [model, setModel] = useState(modelOptions[0]);
+  const [showChatHistory, setShowChatHistory] = useState(true);
+  const [chatHistory, setChatHistory] = useState<Message[]>([]);
+
+  useEffect(() => {
+    const storedHistory = localStorage.getItem("chatHistory");
+    if (storedHistory) {
+      setChatHistory(JSON.parse(storedHistory));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchInitialMessage = async () => {
@@ -85,12 +94,22 @@ const ChatSection: React.FC = () => {
       );
 
       const data = await response.text();
+      const assistantMessage: Message = {
+        role: "assistant",
+        content: data,
+      };
 
-      setMessages([
-        ...messages,
+      const updatedMessages = [...messages, newMessage, assistantMessage];
+      setMessages(updatedMessages);
+      setChatHistory((prevChatHistory) => [
+        ...prevChatHistory,
         newMessage,
-        { role: "assistant", content: data },
+        assistantMessage,
       ]);
+      localStorage.setItem(
+        "chatHistory",
+        JSON.stringify([...chatHistory, newMessage, assistantMessage])
+      );
       setInputText("");
       setIsLoading(false);
     } catch (error) {
@@ -156,6 +175,62 @@ const ChatSection: React.FC = () => {
           Send
         </button>
       </div>
+      {chatHistory.length > 0 && (
+        <>
+          {" "}
+          <div className="mt-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-white">Chat History</h2>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setShowChatHistory(!showChatHistory)}
+                  className="text-white px-4 py-2 rounded-md border text-white bg-gray-700 transition duration-200"
+                >
+                  {showChatHistory ? "Hide" : "Show"}
+                </button>
+                <button
+                  onClick={() => {
+                    setChatHistory([]);
+                    localStorage.removeItem("chatHistory");
+                  }}
+                  className="bg-red-500 px-4 py-2 rounded-md border border-red-500 text-white hover:bg-red-600 transition duration-200"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+            {showChatHistory && (
+              <div className="bg-gray-800 p-4 rounded-lg max-h-60 overflow-y-auto">
+                {chatHistory.map((message, index) => (
+                  <div key={index} className="mb-4">
+                    <div className="flex items-center mb-1">
+                      <span
+                        className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                          message.role === "assistant"
+                            ? "bg-blue-500"
+                            : "bg-gray-500"
+                        }`}
+                      ></span>
+                      <strong
+                        className={`text-sm font-mono ${
+                          message.role === "assistant"
+                            ? "text-blue-400"
+                            : "text-gray-400"
+                        }`}
+                      >
+                        {message.role === "assistant" ? "AI" : "User"}
+                      </strong>
+                    </div>
+                    <p className="text-gray-300 text-sm ml-4">
+                      {message.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       <ModelSelector
         model={model}

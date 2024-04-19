@@ -17,7 +17,6 @@ const ChatSection: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isApiError, setIsApiError] = useState(false);
-  const [isChangingModel, setIsChangingModel] = useState(false);
   const [model, setModel] = useState(modelOptions[0]);
   const [showChatHistory, setShowChatHistory] = useState(true);
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
@@ -235,9 +234,7 @@ const ChatSection: React.FC = () => {
       <ModelSelector
         model={model}
         modelOptions={modelOptions}
-        isChangingModel={isChangingModel}
         setModel={setModel}
-        setIsChangingModel={setIsChangingModel}
       />
     </>
   );

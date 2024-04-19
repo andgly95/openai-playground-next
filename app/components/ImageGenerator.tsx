@@ -12,7 +12,6 @@ const ImageGenerator: React.FC = () => {
   const [generatedImage, setGeneratedImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [model, setModel] = useState(modelOptions[0]);
-  const [isChangingModel, setIsChangingModel] = useState(false);
   const [showImageHistory, setShowImageHistory] = useState(true);
   const [imageHistory, setImageHistory] = useState<string[]>([]);
 
@@ -142,9 +141,7 @@ const ImageGenerator: React.FC = () => {
       <ModelSelector
         model={model}
         modelOptions={modelOptions}
-        isChangingModel={isChangingModel}
         setModel={setModel}
-        setIsChangingModel={setIsChangingModel}
       />
     </>
   );

@@ -82,6 +82,11 @@ const ImageGenerator: React.FC = () => {
       >
         Generate Image
       </button>
+      <ModelSelector
+        model={model}
+        modelOptions={modelOptions}
+        setModel={setModel}
+      />
       {generatedImage && (
         <img
           src={generatedImage}
@@ -137,12 +142,6 @@ const ImageGenerator: React.FC = () => {
           )}
         </div>
       )}
-
-      <ModelSelector
-        model={model}
-        modelOptions={modelOptions}
-        setModel={setModel}
-      />
     </>
   );
 };

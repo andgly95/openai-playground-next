@@ -173,6 +173,12 @@ const ChatSection: React.FC = () => {
           Send
         </button>
       </div>
+
+      <ModelSelector
+        model={model}
+        modelOptions={modelOptions}
+        setModel={setModel}
+      />
       {chatHistory.length > 0 && (
         <>
           {" "}
@@ -229,12 +235,6 @@ const ChatSection: React.FC = () => {
           </div>
         </>
       )}
-
-      <ModelSelector
-        model={model}
-        modelOptions={modelOptions}
-        setModel={setModel}
-      />
     </>
   );
 };

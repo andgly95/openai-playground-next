@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState } from "react";
 import ModelSelector from "./ModelSelector";
+import HistorySection from "./HistorySection";
 
 const modelOptions = ["dall-e-3", "dall-e-2"];
 
@@ -99,48 +100,20 @@ const ImageGenerator: React.FC = () => {
           }}
         />
       )}
+
       {imageHistory.length > 0 && (
-        <div className="mt-8">
-          {" "}
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold mb-4 text-white">Image History</h2>{" "}
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setShowImageHistory(!showImageHistory)}
-                className="text-white px-4 py-2 rounded-md border text-white bg-gray-700 transition duration-200"
-              >
-                {showImageHistory ? "Hide" : "Show"}
-              </button>
-              <button
-                onClick={() => {
-                  setImageHistory([]);
-                  localStorage.removeItem("imageHistory");
-                }}
-                className="bg-red-500 px-4 py-2 rounded-md border border-red-500 text-white hover:bg-red-600 transition duration-200"
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-          {showImageHistory && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {imageHistory.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`Generated Image ${index + 1}`}
-                  className="w-full h-auto rounded-md cursor-pointer"
-                  onClick={(e) => setGeneratedImage(image)}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.onerror = null;
-                    target.src = "/missing.png";
-                  }}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        <HistorySection
+          title="Image History"
+          history={imageHistory.map((image) => ({ content: image }))}
+          showHistory={showImageHistory}
+          type="image"
+          setShowHistory={setShowImageHistory}
+          clearHistory={() => {
+            setImageHistory([]);
+            localStorage.removeItem("imageHistory");
+          }}
+          onItemClick={(item) => setGeneratedImage(item.content)}
+        />
       )}
     </>
   );

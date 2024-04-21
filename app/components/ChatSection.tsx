@@ -5,6 +5,9 @@
 import React, { useEffect, useState } from "react";
 import ModelSelector from "./ModelSelector";
 import HistorySection from "./HistorySection";
+import { VRButton, XR } from "@react-three/xr";
+import { Canvas } from "@react-three/fiber";
+import ARChatWindow from "./ARChatWindow";
 
 interface Message {
   role: string;
@@ -192,6 +195,13 @@ const ChatSection: React.FC = () => {
           }}
         />
       )}
+
+      <Canvas>
+        <XR>
+          <ARChatWindow />
+        </XR>
+      </Canvas>
+      <VRButton />
     </>
   );
 };

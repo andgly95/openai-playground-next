@@ -1,6 +1,6 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { XR, VRButton } from "@react-three/xr";
+import { XR, VRButton, Controllers, Hands } from "@react-three/xr";
 import React, { ReactNode } from "react";
 import ARChatWindow from "./ARChatWindow";
 
@@ -25,7 +25,9 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
       {children}
 
       <Canvas>
-        <XR>
+        <XR referenceSpace="local">
+          <Controllers />
+          <Hands />
           <ARChatWindow />
         </XR>
       </Canvas>

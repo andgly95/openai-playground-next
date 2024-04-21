@@ -1,4 +1,8 @@
+"use client";
+import { Canvas } from "@react-three/fiber";
+import { XR, VRButton } from "@react-three/xr";
 import React, { ReactNode } from "react";
+import ARChatWindow from "./ARChatWindow";
 
 interface GlassmorphicCardProps {
   children: ReactNode;
@@ -19,6 +23,13 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
     >
       <h2 className="text-2xl font-bold text-white">{title}</h2>
       {children}
+
+      <Canvas>
+        <XR>
+          <ARChatWindow />
+        </XR>
+      </Canvas>
+      <VRButton />
     </div>
   );
 };

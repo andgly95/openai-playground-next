@@ -1,9 +1,10 @@
 // components/ARChatWindow.tsx
 "use client";
+
 import React, { useRef } from "react";
-import { Html, Text } from "@react-three/drei";
 import { useXR, Interactive } from "@react-three/xr";
 import { Group } from "three";
+import { Html } from "@react-three/drei";
 import ChatSection from "./ChatSection";
 
 const ARChatWindow: React.FC = () => {
@@ -14,15 +15,12 @@ const ARChatWindow: React.FC = () => {
     <>
       {isPresenting && (
         <Interactive onSelect={() => console.log("Chat window clicked")}>
-          <group ref={chatWindowRef}>
-            <mesh position={[0, 0, -1]}>
-              <planeGeometry args={[2, 1.5]} />
+          <group ref={chatWindowRef} position={[0, 1.5, -2]}>
+            <mesh>
+              <planeGeometry args={[1.5, 1]} />
               <meshBasicMaterial color="white" opacity={0.8} transparent />
             </mesh>
-            <Html
-              position={[0, 0, -0.99]}
-              style={{ width: "1.9m", height: "1.4m" }}
-            >
+            <Html transform occlude style={{ width: "1.4m", height: "0.9m" }}>
               <div style={{ width: "100%", height: "100%", overflow: "auto" }}>
                 <ChatSection />
               </div>
@@ -33,4 +31,5 @@ const ARChatWindow: React.FC = () => {
     </>
   );
 };
+
 export default ARChatWindow;

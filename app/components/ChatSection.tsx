@@ -30,47 +30,46 @@ const ChatSection: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const fetchInitialMessage = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(
-          "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              model,
-              messages: [
-                {
-                  role: "system",
-                  content:
-                    "You are a chatbot. You are designed to assist users with their queries.",
-                },
-              ],
-            }),
-          }
-        );
-
-        const data = await response.text();
-        const assistantMessage: Message = {
-          role: "assistant",
-          content: data,
-        };
-
-        setMessages([assistantMessage]);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error:", error);
-        setIsApiError(true);
-        setIsLoading(false);
-      }
-    };
-
     fetchInitialMessage();
   }, []);
 
+  const fetchInitialMessage = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              {
+                role: "system",
+                content:
+                  "You are a chatbot. You are designed to assist users with their queries.",
+              },
+            ],
+          }),
+        }
+      );
+
+      const data = await response.text();
+      const assistantMessage: Message = {
+        role: "assistant",
+        content: data,
+      };
+
+      setMessages([assistantMessage]);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+      setIsApiError(true);
+      setIsLoading(false);
+    }
+  };
   const handleSendMessage = async () => {
     const newMessage: Message = {
       role: "user",
@@ -116,7 +115,10 @@ const ChatSection: React.FC = () => {
       console.error("Error:", error);
     }
   };
-
+  const handleClearConversation = () => {
+    setMessages([]);
+    fetchInitialMessage();
+  };
   return (
     <>
       <div className="bg-gray-900 p-4 rounded-lg min-h-40 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
@@ -148,6 +150,14 @@ const ChatSection: React.FC = () => {
             <p className="text-gray-300 text-sm ml-4">{message.content}</p>{" "}
           </div>
         ))}{" "}
+        {messages.length > 1 && (
+          <button
+            onClick={handleClearConversation}
+            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right"
+          >
+            Clear
+          </button>
+        )}
       </div>
       <div className="flex">
         <textarea

@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { XR, VRButton, Controllers, Hands } from "@react-three/xr";
 import React, { ReactNode } from "react";
 import ARChatWindow from "./ARChatWindow";
+import { Environment, Sky } from "@react-three/drei";
 
 interface GlassmorphicCardProps {
   children: ReactNode;
@@ -27,8 +28,9 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
       <Canvas>
         <XR referenceSpace="local">
           <Controllers />
-          <Hands />
           <ARChatWindow />
+          <Environment preset="city" />
+          <Sky />
         </XR>
       </Canvas>
       <VRButton />

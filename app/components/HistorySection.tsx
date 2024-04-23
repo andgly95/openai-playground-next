@@ -1,8 +1,9 @@
 // components/HistorySection.tsx
 import React from "react";
-import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
+import { FaBroom, FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { Conversation, Message } from "./ChatSection";
 import ReactMarkdown from "react-markdown";
+import { FaXmark } from "react-icons/fa6";
 
 type HistoryItem = Conversation | string;
 
@@ -14,6 +15,7 @@ interface HistorySectionProps {
   setShowHistory: (show: boolean) => void;
   clearHistory: () => void;
   onItemClick?: (item: HistoryItem) => void;
+  onDeleteItem?: (item: HistoryItem) => void;
 }
 
 const formatTimestamp = (timestamp: number) => {
@@ -48,17 +50,18 @@ const HistorySection: React.FC<HistorySectionProps> = ({
   setShowHistory,
   clearHistory,
   onItemClick,
+  onDeleteItem,
 }) => {
   return (
     <div className="mt-8">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-white">{title}</h2>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <button
             onClick={clearHistory}
-            className="text-red-500 p-2 rounded-full border border-red-500 hover:bg-red-600 hover:text-white transition duration-200"
+            className="bg-gray-700 text-red-500 p-2 rounded-full border border-red-500 hover:bg-red-600 hover:text-white transition duration-200"
           >
-            <FaTrash size={16} />
+            <FaBroom size={16} />
           </button>
           <button
             onClick={() => setShowHistory(!showHistory)}
@@ -77,10 +80,17 @@ const HistorySection: React.FC<HistorySectionProps> = ({
               className="bg-gray-800 rounded-lg max-h-60 overflow-y-auto mb-4"
               key={conversation.id}
             >
-              <div className="bg-gray-700 px-4 py-2 rounded-t-lg">
+              <div className="bg-gray-700 px-4 py-2 rounded-t-lg flex items-center">
                 <span className="text-sm text-gray-300">
                   {formatTimestamp(conversation.timestamp)}
                 </span>
+                <button
+                  type="button"
+                  className="bg-red-500 p-1 ml-auto rounded-full"
+                  onClick={() => onDeleteItem && onDeleteItem(conversation)}
+                >
+                  <FaXmark size={16} />
+                </button>
               </div>
               <div
                 className="p-4 cursor-pointer"

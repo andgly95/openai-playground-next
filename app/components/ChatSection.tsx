@@ -243,6 +243,16 @@ const ChatSection: React.FC = () => {
             setCurrentConversationId((item as Conversation).id);
             setMessages((item as Conversation).messages);
           }}
+          onDeleteItem={(item) => {
+            const updatedConversations = conversations.filter(
+              (c) => c.id !== (item as Conversation).id
+            );
+            setConversations(updatedConversations);
+            localStorage.setItem(
+              "conversations",
+              JSON.stringify(updatedConversations)
+            );
+          }}
         />
       )}
     </>

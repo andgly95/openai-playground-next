@@ -135,7 +135,7 @@ const HistorySection: React.FC<HistorySectionProps> = ({
               key={index}
               src={item as string}
               alt="Generated"
-              className="border-8 border-white rounded-lg shadow-lg"
+              className="border-8 border-white rounded-lg shadow-lg cursor-pointer"
               onClick={() => onItemClick && onItemClick(item)}
               onError={(e) => {
                 const target = e.target as HTMLImageElement;

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import ModelSelector from "./ModelSelector";
 import HistorySection from "./HistorySection";
 import LoadingSpinner from "./LoadingSpinner";
+import GlassmorphicCard from "./GlassmorphicCard";
 
 const modelOptions = ["dall-e-3", "dall-e-2"];
 
@@ -63,49 +64,50 @@ const ImageGenerator: React.FC = () => {
     }
   };
   return (
-    <>
-      <textarea
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        onKeyDown={(e) => {
-          e.key === "Enter" && handleGenerateImage();
-        }}
-        className="w-full border border-gray-300 p-4 pb-16 rounded-md"
-        placeholder="Enter a prompt for the image generator"
-      />
-
-      <button
-        onClick={handleGenerateImage}
-        className={`w-full bg-indigo-500 text-white p-4 rounded-full h-16 flex justify-center items-center ${
-          !prompt || isLoading
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-indigo-600"
-        }`}
-        disabled={isLoading}
-      >
-        {isLoading ? <LoadingSpinner /> : "Generate Image"}
-      </button>
-      <ModelSelector
-        model={model}
-        modelOptions={modelOptions}
-        setModel={setModel}
-      />
-      {generatedImage && (
-        <img
-          src={generatedImage}
-          alt="Generated"
-          className="mt-4 border-8 border-white rounded-lg shadow-lg"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.onerror = null;
-            target.src = "/missing.png";
+    <div className="flex flex-col w-full gap-8">
+      <GlassmorphicCard title="Generate Images">
+        <textarea
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          onKeyDown={(e) => {
+            e.key === "Enter" && handleGenerateImage();
           }}
+          className="w-full border border-gray-300 p-4 pb-16 rounded-md"
+          placeholder="Enter a prompt for the image generator"
         />
-      )}
 
+        <button
+          onClick={handleGenerateImage}
+          className={`w-full bg-indigo-500 text-white p-4 rounded-full h-16 flex justify-center items-center ${
+            !prompt || isLoading
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-indigo-600"
+          }`}
+          disabled={isLoading}
+        >
+          {isLoading ? <LoadingSpinner /> : "Generate Image"}
+        </button>
+        <ModelSelector
+          model={model}
+          modelOptions={modelOptions}
+          setModel={setModel}
+        />
+        {generatedImage && (
+          <img
+            src={generatedImage}
+            alt="Generated"
+            className="mt-4 border-8 border-white rounded-lg shadow-lg"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.onerror = null;
+              target.src = "/missing.png";
+            }}
+          />
+        )}
+      </GlassmorphicCard>
       {imageHistory.length > 0 && (
         <HistorySection
-          title="Image History"
+          title="Generated Images"
           history={imageHistory}
           showHistory={showImageHistory}
           type="image"
@@ -117,7 +119,7 @@ const ImageGenerator: React.FC = () => {
           onItemClick={(item) => setGeneratedImage(item as string)}
         />
       )}
-    </>
+    </div>
   );
 };
 

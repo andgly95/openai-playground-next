@@ -4,6 +4,7 @@ import { FaBroom, FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { Conversation, Message } from "./ChatSection";
 import ReactMarkdown from "react-markdown";
 import { FaXmark } from "react-icons/fa6";
+import GlassmorphicCard from "./GlassmorphicCard";
 
 type HistoryItem = Conversation | string;
 
@@ -53,13 +54,14 @@ const HistorySection: React.FC<HistorySectionProps> = ({
   onDeleteItem,
 }) => {
   return (
-    <div className="mt-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-white">{title}</h2>
+    <GlassmorphicCard
+      size="medium"
+      title={title}
+      actions={
         <div className="flex items-center gap-2">
           <button
             onClick={clearHistory}
-            className="bg-gray-700 text-red-500 p-2 rounded-full border border-red-500 hover:bg-red-600 hover:text-white transition duration-200"
+            className="bg-gray-700 text-red-500 p-2 rounded-full hover:bg-red-600 hover:text-white transition duration-200"
           >
             <FaBroom size={16} />
           </button>
@@ -70,7 +72,8 @@ const HistorySection: React.FC<HistorySectionProps> = ({
             {showHistory ? <FaMinus size={16} /> : <FaPlus size={16} />}
           </button>
         </div>
-      </div>
+      }
+    >
       {showHistory &&
         type === "chat" &&
         history.map((item) => {
@@ -146,7 +149,7 @@ const HistorySection: React.FC<HistorySectionProps> = ({
           ))}
         </div>
       )}
-    </div>
+    </GlassmorphicCard>
   );
 };
 

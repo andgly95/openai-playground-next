@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import ModelSelector from "./ModelSelector";
 import HistorySection from "./HistorySection";
 import ReactMarkdown from "react-markdown";
+import GlassmorphicCard from "./GlassmorphicCard";
 
 export interface Conversation {
   id: string;
@@ -157,77 +158,79 @@ const ChatSection: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="bg-gray-900 p-4 rounded-lg min-h-40 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
-        {" "}
-        {isApiError && !messages.length && (
-          <div className="text-red-500 text-center mb-4">API Error</div>
-        )}{" "}
-        {messages.map((message, index) => (
-          <div key={index} className="mb-4">
-            {" "}
-            <div className="flex items-center mb-1">
+    <div className="flex flex-col w-full gap-8">
+      <GlassmorphicCard title="Chat with AI">
+        <div className="bg-gray-900 p-4 rounded-lg min-h-40 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
+          {" "}
+          {isApiError && !messages.length && (
+            <div className="text-red-500 text-center mb-4">API Error</div>
+          )}{" "}
+          {messages.map((message, index) => (
+            <div key={index} className="mb-4">
               {" "}
-              <span
-                className={`inline-block w-2 h-2 rounded-full mr-2 ${
-                  message.role === "assistant" ? "bg-blue-500" : "bg-gray-500"
-                }`}
-              ></span>{" "}
-              <strong
-                className={`text-sm font-mono ${
-                  message.role === "assistant"
-                    ? "text-blue-400"
-                    : "text-gray-400"
-                }`}
-              >
+              <div className="flex items-center mb-1">
                 {" "}
-                {message.role === "assistant" ? "AI" : "User"}{" "}
-              </strong>{" "}
-            </div>{" "}
-            <div className="text-gray-300 text-sm ml-4">
-              <ReactMarkdown>{message.content}</ReactMarkdown>
+                <span
+                  className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                    message.role === "assistant" ? "bg-blue-500" : "bg-gray-500"
+                  }`}
+                ></span>{" "}
+                <strong
+                  className={`text-sm font-mono ${
+                    message.role === "assistant"
+                      ? "text-blue-400"
+                      : "text-gray-400"
+                  }`}
+                >
+                  {" "}
+                  {message.role === "assistant" ? "AI" : "User"}{" "}
+                </strong>{" "}
+              </div>{" "}
+              <div className="text-gray-300 text-sm ml-4">
+                <ReactMarkdown>{message.content}</ReactMarkdown>
+              </div>
             </div>
-          </div>
-        ))}{" "}
-        {messages.length > 1 && (
+          ))}{" "}
+          {messages.length > 1 && (
+            <button
+              onClick={handleClearConversation}
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <div className="flex">
+          <textarea
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={(e) => {
+              e.key === "Enter" && handleSendMessage();
+            }}
+            className={`w-full border border-gray-300 bg-neutral-200 px-4 py-2 rounded-l-md ${
+              isLoading && "opacity-50 cursor-not-allowed"
+            }`}
+            placeholder="Enter a message"
+            disabled={isLoading}
+          />
           <button
-            onClick={handleClearConversation}
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right"
+            onClick={handleSendMessage}
+            className={`bg-indigo-500 text-white px-8 py-2 rounded-r-md ${
+              !inputText || isLoading
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-indigo-600"
+            }`}
+            disabled={!inputText || isLoading}
           >
-            Clear
+            Send
           </button>
-        )}
-      </div>
-      <div className="flex">
-        <textarea
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          onKeyDown={(e) => {
-            e.key === "Enter" && handleSendMessage();
-          }}
-          className={`w-full border border-gray-300 bg-neutral-200 px-4 py-2 rounded-l-md ${
-            isLoading && "opacity-50 cursor-not-allowed"
-          }`}
-          placeholder="Enter a message"
-          disabled={isLoading}
+        </div>
+        <ModelSelector
+          model={model}
+          modelOptions={modelOptions}
+          setModel={setModel}
         />
-        <button
-          onClick={handleSendMessage}
-          className={`bg-indigo-500 text-white px-8 py-2 rounded-r-md ${
-            !inputText || isLoading
-              ? "opacity-50 cursor-not-allowed"
-              : "hover:bg-indigo-600"
-          }`}
-          disabled={!inputText || isLoading}
-        >
-          Send
-        </button>
-      </div>
-      <ModelSelector
-        model={model}
-        modelOptions={modelOptions}
-        setModel={setModel}
-      />
+      </GlassmorphicCard>
       {conversations.length > 0 && (
         <HistorySection
           title="Conversations"
@@ -255,7 +258,7 @@ const ChatSection: React.FC = () => {
           }}
         />
       )}
-    </>
+    </div>
   );
 };
 

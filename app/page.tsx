@@ -1,5 +1,4 @@
 import ChatSection from "./components/ChatSection";
-import GlassmorphicCard from "./components/GlassmorphicCard";
 import ImageGenerator from "./components/ImageGenerator";
 
 export default function Home() {
@@ -11,15 +10,11 @@ export default function Home() {
         </p>
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
           <div className="lg:w-1/2">
-            <GlassmorphicCard title="Chat with AI">
-              <ChatSection />
-            </GlassmorphicCard>
+            <ChatSection />
           </div>
 
           <div className="lg:w-1/2">
-            <GlassmorphicCard title="Generate Images">
-              <ImageGenerator />
-            </GlassmorphicCard>
+            <ImageGenerator />
           </div>
         </div>
       </section>

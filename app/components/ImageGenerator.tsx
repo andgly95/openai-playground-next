@@ -107,7 +107,7 @@ const ImageGenerator: React.FC = () => {
       </GlassmorphicCard>
       {imageHistory.length > 0 && (
         <HistorySection
-          title="Generated Images"
+          title="Image History"
           history={imageHistory}
           showHistory={showImageHistory}
           type="image"

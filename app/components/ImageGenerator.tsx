@@ -104,7 +104,7 @@ const ImageGenerator: React.FC = () => {
       {imageHistory.length > 0 && (
         <HistorySection
           title="Image History"
-          history={imageHistory.map((image) => ({ content: image }))}
+          history={imageHistory}
           showHistory={showImageHistory}
           type="image"
           setShowHistory={setShowImageHistory}
@@ -112,7 +112,7 @@ const ImageGenerator: React.FC = () => {
             setImageHistory([]);
             localStorage.removeItem("imageHistory");
           }}
-          onItemClick={(item) => setGeneratedImage(item.content)}
+          onItemClick={(item) => setGeneratedImage(item as string)}
         />
       )}
     </>

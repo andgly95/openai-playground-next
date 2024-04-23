@@ -5,8 +5,14 @@
 import React, { useEffect, useState } from "react";
 import ModelSelector from "./ModelSelector";
 import HistorySection from "./HistorySection";
+import ReactMarkdown from "react-markdown";
 
-interface Message {
+export interface Conversation {
+  id: string;
+  timestamp: number;
+  messages: Message[];
+}
+export interface Message {
   role: string;
   content: string;
 }
@@ -20,17 +26,55 @@ const ChatSection: React.FC = () => {
   const [isApiError, setIsApiError] = useState(false);
   const [model, setModel] = useState(modelOptions[0]);
   const [showChatHistory, setShowChatHistory] = useState(true);
-  const [chatHistory, setChatHistory] = useState<Message[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [currentConversationId, setCurrentConversationId] =
+    useState<string>("");
 
   useEffect(() => {
-    const storedHistory = localStorage.getItem("chatHistory");
-    if (storedHistory) {
-      setChatHistory(JSON.parse(storedHistory));
+    const storedConversations = localStorage.getItem("conversations");
+    if (storedConversations) {
+      setConversations(JSON.parse(storedConversations));
     }
   }, []);
 
   useEffect(() => {
+    if (conversations.length === 0) {
+      createNewConversation();
+    }
+  }, [conversations]);
+
+  const createNewConversation = () => {
+    const newConversationId = `conversation_${Date.now()}`;
+    setCurrentConversationId(newConversationId);
+    setMessages([]);
     fetchInitialMessage();
+  };
+
+  const saveConversation = (newMessages: Message[]) => {
+    const updatedConversations = conversations.map((conversation) => {
+      if (conversation.id === currentConversationId) {
+        return {
+          ...conversation,
+          messages: newMessages,
+        };
+      }
+      return conversation;
+    });
+
+    if (!conversations.some((c) => c.id === currentConversationId)) {
+      updatedConversations.push({
+        id: currentConversationId,
+        messages: newMessages,
+        timestamp: Date.now(),
+      });
+    }
+
+    setConversations(updatedConversations);
+    localStorage.setItem("conversations", JSON.stringify(updatedConversations));
+  };
+
+  useEffect(() => {
+    createNewConversation();
   }, []);
 
   const fetchInitialMessage = async () => {
@@ -100,15 +144,7 @@ const ChatSection: React.FC = () => {
 
       const updatedMessages = [...messages, newMessage, assistantMessage];
       setMessages(updatedMessages);
-      setChatHistory((prevChatHistory) => [
-        ...prevChatHistory,
-        newMessage,
-        assistantMessage,
-      ]);
-      localStorage.setItem(
-        "chatHistory",
-        JSON.stringify([...chatHistory, newMessage, assistantMessage])
-      );
+      saveConversation(updatedMessages);
       setInputText("");
       setIsLoading(false);
     } catch (error) {
@@ -117,8 +153,9 @@ const ChatSection: React.FC = () => {
   };
   const handleClearConversation = () => {
     setMessages([]);
-    fetchInitialMessage();
+    createNewConversation();
   };
+
   return (
     <>
       <div className="bg-gray-900 p-4 rounded-lg min-h-40 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
@@ -191,16 +228,20 @@ const ChatSection: React.FC = () => {
         modelOptions={modelOptions}
         setModel={setModel}
       />
-      {chatHistory.length > 0 && (
+      {conversations.length > 0 && (
         <HistorySection
-          title="Chat History"
-          history={chatHistory}
+          title="Conversations"
+          history={conversations}
           showHistory={showChatHistory}
           type="chat"
           setShowHistory={setShowChatHistory}
           clearHistory={() => {
-            setChatHistory([]);
-            localStorage.removeItem("chatHistory");
+            setConversations([]);
+            localStorage.removeItem("conversations");
+          }}
+          onItemClick={(item) => {
+            setCurrentConversationId((item as Conversation).id);
+            setMessages((item as Conversation).messages);
           }}
         />
       )}

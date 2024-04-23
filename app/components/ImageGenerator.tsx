@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from "react";
 import ModelSelector from "./ModelSelector";
 import HistorySection from "./HistorySection";
+import LoadingSpinner from "./LoadingSpinner";
 
 const modelOptions = ["dall-e-3", "dall-e-2"];
 
@@ -72,16 +73,17 @@ const ImageGenerator: React.FC = () => {
         className="w-full border border-gray-300 p-4 pb-16 rounded-md"
         placeholder="Enter a prompt for the image generator"
       />
+
       <button
         onClick={handleGenerateImage}
-        className={`w-full bg-indigo-500 text-white p-4 rounded-full ${
+        className={`w-full bg-indigo-500 text-white p-4 rounded-full h-16 flex justify-center items-center ${
           !prompt || isLoading
             ? "opacity-50 cursor-not-allowed"
             : "hover:bg-indigo-600"
         }`}
         disabled={isLoading}
       >
-        Generate Image
+        {isLoading ? <LoadingSpinner /> : "Generate Image"}
       </button>
       <ModelSelector
         model={model}

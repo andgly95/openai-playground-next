@@ -147,7 +147,9 @@ const ChatSection: React.FC = () => {
                 {message.role === "assistant" ? "AI" : "User"}{" "}
               </strong>{" "}
             </div>{" "}
-            <p className="text-gray-300 text-sm ml-4">{message.content}</p>{" "}
+            <div className="text-gray-300 text-sm ml-4">
+              <ReactMarkdown>{message.content}</ReactMarkdown>
+            </div>
           </div>
         ))}{" "}
         {messages.length > 1 && (

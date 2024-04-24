@@ -19,8 +19,14 @@ export interface Message {
 }
 
 const modelOptions = ["gpt-4-turbo", "gpt-3.5-turbo"];
+const initialSystemPrompt =
+  "You are a chatbot. You are designed to assist users with their queries.";
 
 const ChatSection: React.FC = () => {
+  const [systemPrompt, setSystemPrompt] = useState<string>(initialSystemPrompt);
+  const [systemPromptInput, setSystemPromptInput] =
+    useState<string>(initialSystemPrompt);
+  const [isSystemPromptEditable, setIsSystemPromptEditable] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -76,10 +82,11 @@ const ChatSection: React.FC = () => {
 
   useEffect(() => {
     createNewConversation();
-  }, []);
+  }, [systemPrompt]);
 
   const fetchInitialMessage = async () => {
     try {
+      console.log(systemPrompt);
       setIsLoading(true);
       const response = await fetch(
         "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
@@ -93,8 +100,7 @@ const ChatSection: React.FC = () => {
             messages: [
               {
                 role: "system",
-                content:
-                  "You are a chatbot. You are designed to assist users with their queries.",
+                content: systemPrompt,
               },
             ],
           }),
@@ -156,41 +162,71 @@ const ChatSection: React.FC = () => {
     setMessages([]);
     createNewConversation();
   };
+  const handleSaveSystemPrompt = () => {
+    setSystemPrompt(systemPromptInput);
+    setIsSystemPromptEditable(false);
+  };
 
   return (
     <div className="flex flex-col w-full gap-8">
       <GlassmorphicCard title="Chat with AI">
-        <div className="bg-gray-900 p-4 rounded-lg min-h-40 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
+        <div className="bg-gray-900 p-4 rounded-lg min-h-20 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
           {" "}
+          {isLoading && !messages.length && (
+            <div className="text-gray-300 text-center mb-4">Loading...</div>
+          )}{" "}
           {isApiError && !messages.length && (
             <div className="text-red-500 text-center mb-4">API Error</div>
           )}{" "}
-          {messages.map((message, index) => (
-            <div key={index} className="mb-4">
+          {isSystemPromptEditable && (
+            <div className="mb-4">
               {" "}
               <div className="flex items-center mb-1">
                 {" "}
                 <span
-                  className={`inline-block w-2 h-2 rounded-full mr-2 ${
-                    message.role === "assistant" ? "bg-blue-500" : "bg-gray-500"
-                  }`}
+                  className={`inline-block w-2 h-2 rounded-full mr-2 bg-white`}
                 ></span>{" "}
-                <strong
-                  className={`text-sm font-mono ${
-                    message.role === "assistant"
-                      ? "text-blue-400"
-                      : "text-gray-400"
-                  }`}
-                >
+                <strong className={`text-sm font-mono text-white`}>
                   {" "}
-                  {message.role === "assistant" ? "AI" : "User"}{" "}
+                  {" System "}{" "}
                 </strong>{" "}
               </div>{" "}
-              <div className="text-gray-300 text-sm ml-4">
-                <ReactMarkdown>{message.content}</ReactMarkdown>
-              </div>
+              <textarea
+                value={systemPromptInput}
+                onChange={(e) => setSystemPromptInput(e.target.value)}
+                className="w-full border border-gray-300 bg-neutral-200 px-4 py-2 rounded-md"
+              ></textarea>
             </div>
-          ))}{" "}
+          )}{" "}
+          {!isSystemPromptEditable &&
+            messages.map((message, index) => (
+              <div key={index} className="mb-4">
+                {" "}
+                <div className="flex items-center mb-1">
+                  {" "}
+                  <span
+                    className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                      message.role === "assistant"
+                        ? "bg-blue-500"
+                        : "bg-gray-500"
+                    }`}
+                  ></span>{" "}
+                  <strong
+                    className={`text-sm font-mono ${
+                      message.role === "assistant"
+                        ? "text-blue-400"
+                        : "text-gray-400"
+                    }`}
+                  >
+                    {" "}
+                    {message.role === "assistant" ? "AI" : "User"}{" "}
+                  </strong>{" "}
+                </div>{" "}
+                <div className="text-gray-300 text-sm ml-4">
+                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                </div>
+              </div>
+            ))}{" "}
           {messages.length > 1 && (
             <button
               onClick={handleClearConversation}
@@ -198,6 +234,28 @@ const ChatSection: React.FC = () => {
             >
               Clear
             </button>
+          )}
+          {messages.length === 1 && (
+            <div className="flex items-center gap-2 float-right">
+              {isSystemPromptEditable && (
+                <button
+                  onClick={(e) => setIsSystemPromptEditable(false)}
+                  className="text-neutral-500 px-4 py-2 rounded-md hover:bg-neutral-600 hover:text-white"
+                >
+                  Cancel
+                </button>
+              )}
+              <button
+                onClick={(e) =>
+                  isSystemPromptEditable
+                    ? handleSaveSystemPrompt()
+                    : setIsSystemPromptEditable(!isSystemPromptEditable)
+                }
+                className="text-indigo-500  px-4 py-2 rounded-md hover:bg-indigo-600 hover:text-white"
+              >
+                {isSystemPromptEditable ? "Save" : "Edit"} System Prompt
+              </button>
+            </div>
           )}
         </div>
         <div className="flex">

@@ -23,9 +23,8 @@ const initialSystemPrompt =
   "You are a chatbot. You are designed to assist users with their queries.";
 
 const ChatSection: React.FC = () => {
-  const [systemPrompt, setSystemPrompt] = useState<string>(initialSystemPrompt);
-  const [systemPromptInput, setSystemPromptInput] =
-    useState<string>(initialSystemPrompt);
+  const [systemPrompt, setSystemPrompt] = useState<string>();
+  const [systemPromptInput, setSystemPromptInput] = useState<string>();
   const [isSystemPromptEditable, setIsSystemPromptEditable] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
@@ -38,6 +37,7 @@ const ChatSection: React.FC = () => {
     useState<string>("");
 
   useEffect(() => {
+    // Load conversations from localStorage
     const storedConversations = localStorage.getItem("conversations");
     if (storedConversations) {
       setConversations(JSON.parse(storedConversations));
@@ -45,10 +45,28 @@ const ChatSection: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Load systemPrompt from localStorage
+    const savedSystemPrompt = localStorage.getItem("systemPrompt");
+    if (savedSystemPrompt) {
+      setSystemPrompt(savedSystemPrompt);
+      setSystemPromptInput(savedSystemPrompt);
+    } else {
+      setSystemPrompt(initialSystemPrompt);
+      setSystemPromptInput(initialSystemPrompt);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Create a new conversation if there are no conversations
     if (conversations.length === 0) {
       createNewConversation();
     }
   }, [conversations]);
+
+  useEffect(() => {
+    // Fetch initial message when systemPrompt changes
+    createNewConversation();
+  }, [systemPrompt]);
 
   const createNewConversation = () => {
     const newConversationId = `conversation_${Date.now()}`;
@@ -79,14 +97,11 @@ const ChatSection: React.FC = () => {
     setConversations(updatedConversations);
     localStorage.setItem("conversations", JSON.stringify(updatedConversations));
   };
-
-  useEffect(() => {
-    createNewConversation();
-  }, [systemPrompt]);
-
   const fetchInitialMessage = async () => {
     try {
-      console.log(systemPrompt);
+      if (!systemPrompt) {
+        return;
+      }
       setIsLoading(true);
       const response = await fetch(
         "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
@@ -138,7 +153,14 @@ const ChatSection: React.FC = () => {
           },
           body: JSON.stringify({
             model,
-            messages: [...messages, newMessage],
+            messages: [
+              {
+                role: "system",
+                content: systemPrompt,
+              },
+              ...messages,
+              newMessage,
+            ],
           }),
         }
       );
@@ -164,6 +186,7 @@ const ChatSection: React.FC = () => {
   };
   const handleSaveSystemPrompt = () => {
     setSystemPrompt(systemPromptInput);
+    localStorage.setItem("systemPrompt", systemPromptInput);
     setIsSystemPromptEditable(false);
   };
 
@@ -239,14 +262,14 @@ const ChatSection: React.FC = () => {
             <div className="flex items-center gap-2 float-right">
               {isSystemPromptEditable && (
                 <button
-                  onClick={(e) => setIsSystemPromptEditable(false)}
+                  onClick={(_) => setIsSystemPromptEditable(false)}
                   className="text-neutral-500 px-4 py-2 rounded-md hover:bg-neutral-600 hover:text-white"
                 >
                   Cancel
                 </button>
               )}
               <button
-                onClick={(e) =>
+                onClick={(_) =>
                   isSystemPromptEditable
                     ? handleSaveSystemPrompt()
                     : setIsSystemPromptEditable(!isSystemPromptEditable)

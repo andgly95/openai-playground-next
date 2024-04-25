@@ -7,6 +7,7 @@ import ModelSelector from "./ModelSelector";
 import HistorySection from "./HistorySection";
 import ReactMarkdown from "react-markdown";
 import GlassmorphicCard from "./GlassmorphicCard";
+import LoadingSpinner from "./LoadingSpinner";
 
 export interface Conversation {
   id: string;
@@ -196,7 +197,9 @@ const ChatSection: React.FC = () => {
         <div className="bg-gray-900 p-4 rounded-lg min-h-20 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
           {" "}
           {isLoading && !messages.length && (
-            <div className="text-gray-300 text-center mb-4">Loading...</div>
+            <div className="text-gray-300 text-center mb-4">
+              <LoadingSpinner />
+            </div>
           )}{" "}
           {isApiError && !messages.length && (
             <div className="text-red-500 text-center mb-4">API Error</div>

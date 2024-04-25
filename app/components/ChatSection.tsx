@@ -195,48 +195,42 @@ const ChatSection: React.FC = () => {
     <div className="flex flex-col w-full gap-8">
       <GlassmorphicCard title="Chat with AI">
         <div className="bg-gray-900 p-4 rounded-lg min-h-20 max-h-[80vh] lg:max-h-[60vh] overflow-y-auto">
-          {" "}
           {isLoading && !messages.length && (
             <div className="text-gray-300 text-center mb-4">
               <LoadingSpinner />
             </div>
-          )}{" "}
+          )}
           {isApiError && !messages.length && (
             <div className="text-red-500 text-center mb-4">API Error</div>
-          )}{" "}
+          )}
           {isSystemPromptEditable && (
             <div className="mb-4">
-              {" "}
               <div className="flex items-center mb-1">
-                {" "}
                 <span
                   className={`inline-block w-2 h-2 rounded-full mr-2 bg-white`}
-                ></span>{" "}
+                ></span>
                 <strong className={`text-sm font-mono text-white`}>
-                  {" "}
-                  {" System "}{" "}
-                </strong>{" "}
-              </div>{" "}
+                  {" System "}
+                </strong>
+              </div>
               <textarea
                 value={systemPromptInput}
                 onChange={(e) => setSystemPromptInput(e.target.value)}
                 className="w-full border border-gray-300 bg-neutral-200 px-4 py-2 rounded-md"
               ></textarea>
             </div>
-          )}{" "}
+          )}
           {!isSystemPromptEditable &&
             messages.map((message, index) => (
               <div key={index} className="mb-4">
-                {" "}
                 <div className="flex items-center mb-1">
-                  {" "}
                   <span
                     className={`inline-block w-2 h-2 rounded-full mr-2 ${
                       message.role === "assistant"
                         ? "bg-blue-500"
                         : "bg-gray-500"
                     }`}
-                  ></span>{" "}
+                  ></span>
                   <strong
                     className={`text-sm font-mono ${
                       message.role === "assistant"
@@ -244,15 +238,14 @@ const ChatSection: React.FC = () => {
                         : "text-gray-400"
                     }`}
                   >
-                    {" "}
-                    {message.role === "assistant" ? "AI" : "User"}{" "}
-                  </strong>{" "}
-                </div>{" "}
+                    {message.role === "assistant" ? "AI" : "User"}
+                  </strong>
+                </div>
                 <div className="text-gray-300 text-sm ml-4">
                   <ReactMarkdown>{message.content}</ReactMarkdown>
                 </div>
               </div>
-            ))}{" "}
+            ))}
           {messages.length > 1 && (
             <button
               onClick={handleClearConversation}

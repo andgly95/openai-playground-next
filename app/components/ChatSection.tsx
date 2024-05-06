@@ -193,7 +193,10 @@ const ChatSection: React.FC = () => {
   };
   const handleSaveSystemPrompt = () => {
     setSystemPrompt(systemPromptInput);
-    localStorage.setItem("systemPrompt", systemPromptInput);
+    localStorage.setItem(
+      "systemPrompt",
+      systemPromptInput || initialSystemPrompt
+    );
     setIsSystemPromptEditable(false);
   };
 

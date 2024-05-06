@@ -1,18 +1,19 @@
 // components/HistorySection.tsx
 import React from "react";
 import { FaBroom, FaMinus, FaPlus, FaTrash } from "react-icons/fa";
-import { Conversation, Message } from "./ChatSection";
+import { Conversation } from "./ChatSection";
 import ReactMarkdown from "react-markdown";
 import { FaXmark } from "react-icons/fa6";
 import GlassmorphicCard from "./GlassmorphicCard";
+import { TextToSpeechItem } from "./TextToSpeechSection";
 
-type HistoryItem = Conversation | string;
+type HistoryItem = Conversation | string | TextToSpeechItem;
 
 interface HistorySectionProps {
   title: string;
   history: HistoryItem[];
   showHistory: boolean;
-  type: "chat" | "image";
+  type: "chat" | "image" | "tts";
   setShowHistory: (show: boolean) => void;
   clearHistory: () => void;
   onItemClick?: (item: HistoryItem) => void;
@@ -39,7 +40,7 @@ const formatTimestamp = (timestamp: number) => {
   } else if (daysDiff <= 7) {
     return `${daysDiff} days ago, ${formattedHours}:${formattedMinutes} ${ampm}`;
   } else {
-    return date.toLocaleString(); // Format the timestamp as per your preference
+    return date.toLocaleString();
   }
 };
 
@@ -149,6 +150,52 @@ const HistorySection: React.FC<HistorySectionProps> = ({
           ))}
         </div>
       )}
+      {showHistory &&
+        type === "tts" &&
+        history.map((item) => {
+          const ttsItem = item as TextToSpeechItem;
+          return (
+            <div
+              className="bg-gray-800 rounded-lg max-h-60 overflow-y-auto mb-4"
+              key={ttsItem.id}
+            >
+              <div className="bg-gray-700 px-4 py-2 rounded-t-lg flex items-center">
+                <span className="text-sm text-gray-300">
+                  {formatTimestamp(ttsItem.timestamp)}
+                </span>
+                <button
+                  type="button"
+                  className="bg-red-500 p-1 ml-auto rounded-full"
+                  onClick={() => onDeleteItem && onDeleteItem(ttsItem)}
+                >
+                  <FaXmark size={16} />
+                </button>
+              </div>
+              <div
+                className="p-4 cursor-pointer"
+                onClick={() => onItemClick && onItemClick(ttsItem)}
+              >
+                <div className="mb-2">
+                  <strong className="text-sm font-mono text-gray-400">
+                    Text:
+                  </strong>
+                  <div className="text-gray-300 text-sm ml-4">
+                    {ttsItem.text}
+                  </div>
+                </div>
+                <div>
+                  <strong className="text-sm font-mono text-gray-400">
+                    Voice:
+                  </strong>
+                  <div className="text-gray-300 text-sm ml-4">
+                    {ttsItem.voice}
+                  </div>
+                </div>
+                <audio src={ttsItem.audioUrl} controls className="mt-4" />
+              </div>
+            </div>
+          );
+        })}
     </GlassmorphicCard>
   );
 };

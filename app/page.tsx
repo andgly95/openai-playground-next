@@ -1,5 +1,6 @@
 import ChatSection from "./components/ChatSection";
 import ImageGenerator from "./components/ImageGenerator";
+import TextToSpeechSection from "./components/TextToSpeechSection";
 
 export default function Home() {
   return (
@@ -9,8 +10,9 @@ export default function Home() {
           Unleash your imagination with AI-powered chat and images.
         </p>
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
-          <div className="lg:w-1/2">
+          <div className="lg:w-1/2 flex flex-col gap-4">
             <ChatSection />
+            <TextToSpeechSection />
           </div>
 
           <div className="lg:w-1/2">

@@ -19,7 +19,13 @@ export interface Message {
   content: string;
 }
 
-const modelOptions = ["gpt-4-turbo", "gpt-3.5-turbo"];
+const modelOptions = [
+  "gpt-4-turbo",
+  "gpt-3.5-turbo",
+  "claude-3-opus-20240229",
+  "claude-3-sonnet-20240229",
+  "claude-3-haiku-20240229",
+];
 const initialSystemPrompt =
   "You are a chatbot. You are designed to assist users with their queries.";
 

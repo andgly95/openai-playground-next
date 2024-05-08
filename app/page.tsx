@@ -1,5 +1,6 @@
 import ChatSection from "./components/ChatSection";
 import ImageGenerator from "./components/ImageGenerator";
+import SpeechToTextSection from "./components/SpeechToTextSection";
 import TextToSpeechSection from "./components/TextToSpeechSection";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
           <div className="lg:w-1/2 flex flex-col gap-4">
             <ChatSection />
             <TextToSpeechSection />
+            <SpeechToTextSection />
           </div>
 
           <div className="lg:w-1/2">

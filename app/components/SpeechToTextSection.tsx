@@ -49,11 +49,11 @@ const SpeechToTextSection: React.FC = () => {
 
     try {
       const response = await fetch(
-        "https://api.openai.com/v1/audio/transcriptions",
+        "https://f759-70-23-243-115.ngrok-free.app/transcribe_speech",
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+            "Content-Type": "application/json",
           },
           body: formData,
         }

@@ -52,15 +52,12 @@ const SpeechToTextSection: React.FC = () => {
         "https://f759-70-23-243-115.ngrok-free.app/transcribe_speech",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: formData,
         }
       );
 
       const data = await response.json();
-      setTranscribedText(data.text);
+      setTranscribedText(data["text"]);
     } catch (error) {
       console.error("Error:", error);
     }

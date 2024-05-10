@@ -10,8 +10,8 @@ export default function Home() {
         <p className="text-xl text-gray-300 mb-12">
           Unleash your imagination with AI-powered chat and images.
         </p>
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
-          <div className="lg:w-1/2 flex flex-col gap-4">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="lg:w-1/2 flex flex-col gap-8">
             <ChatSection />
             <TextToSpeechSection />
             <SpeechToTextSection />

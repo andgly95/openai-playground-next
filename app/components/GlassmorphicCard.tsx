@@ -17,7 +17,7 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
 }) => {
   return (
     <div
-      className={`p-6 bg-white/20 backdrop-blur-lg rounded-xl shadow-md flex flex-col gap-4 w-full ${
+      className={`p-5 bg-white/20 backdrop-blur-lg rounded-xl shadow-md flex flex-col gap-4 w-full ${
         className || ""
       }`}
     >

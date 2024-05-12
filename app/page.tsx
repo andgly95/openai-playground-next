@@ -2,6 +2,7 @@ import ChatSection from "./components/ChatSection";
 import ImageGenerator from "./components/ImageGenerator";
 import SpeechToTextSection from "./components/SpeechToTextSection";
 import TextToSpeechSection from "./components/TextToSpeechSection";
+import VoiceChatSection from "./components/VoiceChatSection";
 
 export default function Home() {
   return (
@@ -10,15 +11,16 @@ export default function Home() {
         <p className="text-xl text-gray-300 mb-12">
           Unleash your imagination with AI-powered chat and images.
         </p>
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
-          <div className="lg:w-1/2 flex flex-col gap-4">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="lg:w-1/2 flex flex-col gap-8">
             <ChatSection />
             <TextToSpeechSection />
             <SpeechToTextSection />
           </div>
 
-          <div className="lg:w-1/2">
+          <div className="lg:w-1/2 flex flex-col gap-8">
             <ImageGenerator />
+            <VoiceChatSection />
           </div>
         </div>
       </section>

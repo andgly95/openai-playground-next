@@ -20,6 +20,7 @@ export interface Message {
 }
 
 const modelOptions = [
+  "gpt-4o",
   "gpt-4-turbo",
   "gpt-3.5-turbo",
   "claude-3-opus-20240229",

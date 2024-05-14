@@ -2,10 +2,12 @@
 
 import React, { useState, useRef } from "react";
 import GlassmorphicCard from "./GlassmorphicCard";
+import RecordButton from "./RecordButton";
 
 const SpeechToTextSection: React.FC = () => {
   const [transcribedText, setTranscribedText] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
 
@@ -43,6 +45,7 @@ const SpeechToTextSection: React.FC = () => {
   };
 
   const handleTranscribeAudio = async (audioBlob: Blob) => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("file", audioBlob, "recording.wav");
     formData.append("model", "whisper-1");
@@ -61,19 +64,25 @@ const SpeechToTextSection: React.FC = () => {
     } catch (error) {
       console.error("Error:", error);
     }
+    setIsLoading(false);
+  };
+
+  const handleRecordButtonClick = () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
   };
 
   return (
     <GlassmorphicCard title="Speech to Text">
       <div className="bg-gray-900 p-4 rounded-lg min-h-20">
-        <button
-          onClick={isRecording ? stopRecording : startRecording}
-          className={`px-4 py-2 rounded ${
-            isRecording ? "bg-red-500" : "bg-green-500"
-          } text-white`}
-        >
-          {isRecording ? "Stop Recording" : "Start Recording"}
-        </button>
+        <RecordButton
+          isRecording={isRecording}
+          isLoading={isLoading}
+          onClick={handleRecordButtonClick}
+        />
         {transcribedText && (
           <div className="bg-neutral-600 text-white p-4 rounded-md mt-4">
             {transcribedText}

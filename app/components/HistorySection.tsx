@@ -1,6 +1,6 @@
 // components/HistorySection.tsx
 import React from "react";
-import { FaBroom, FaMinus, FaPlus, FaTrash } from "react-icons/fa";
+import { FaBroom, FaMinus, FaPlus } from "react-icons/fa";
 import { Conversation } from "./ChatSection";
 import ReactMarkdown from "react-markdown";
 import { FaXmark } from "react-icons/fa6";

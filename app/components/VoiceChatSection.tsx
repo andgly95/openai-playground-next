@@ -7,6 +7,8 @@ import GlassmorphicCard from "./GlassmorphicCard";
 import LoadingSpinner from "./LoadingSpinner";
 import { Message } from "./ChatSection";
 import { TextToSpeechItem } from "./TextToSpeechSection";
+import { FaMicrophone, FaStop } from "react-icons/fa";
+import RecordButton from "./RecordButton";
 
 const VoiceChatSection: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -133,6 +135,14 @@ const VoiceChatSection: React.FC = () => {
     }
   };
 
+  const handleRecordButtonClick = () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  };
+
   return (
     <GlassmorphicCard title="Voice Chat">
       <div className="bg-gray-900 p-4 rounded-lg min-h-20">
@@ -161,21 +171,11 @@ const VoiceChatSection: React.FC = () => {
             </div>
           ))}
         </div>
-        <button
-          onClick={isRecording ? stopRecording : startRecording}
-          className={`px-4 py-2 rounded ${
-            isRecording ? "bg-red-500" : "bg-green-500"
-          } text-white`}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : isRecording ? (
-            "Stop Recording"
-          ) : (
-            "Start Recording"
-          )}
-        </button>
+        <RecordButton
+          isRecording={isRecording}
+          isLoading={isLoading}
+          onClick={handleRecordButtonClick}
+        />
         {isApiError && (
           <div className="text-red-500 mt-4">Error processing voice chat</div>
         )}

@@ -29,9 +29,21 @@ export default function RootLayout({
                 <span className="text-indigo-400">Imagi</span>Chat
               </h1>
             </Link>
+            <nav>
+              <ul className="flex gap-8 text-white">
+                <li>
+                  <Link href="/demo">Demo</Link>
+                </li>
+                <li>
+                  <Link href="/game">Game</Link>
+                </li>
+              </ul>
+            </nav>
           </div>
         </header>
-        {children}
+        <main className="container mx-auto px-4 py-8 lg:py-16 flex-grow">
+          {children}
+        </main>
         <footer className="bg-neutral-800 py-4 mt-8">
           <div className="container mx-auto px-4 text-center text-gray-400">
             &copy; {new Date().getFullYear()} ImagiChat. All rights reserved.

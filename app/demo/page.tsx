@@ -1,9 +1,4 @@
-import ChatSection from "../components/ChatSection";
 import DynamicSection from "../components/DynamicSection";
-import ImageGenerator from "../components/ImageGenerator";
-import SpeechToTextSection from "../components/SpeechToTextSection";
-import TextToSpeechSection from "../components/TextToSpeechSection";
-import VoiceChatSection from "../components/VoiceChatSection";
 
 export default function Demo() {
   return (
@@ -15,11 +10,3 @@ export default function Demo() {
     </section>
   );
 }
-
-const Components = {
-  chat: ChatSection,
-  image: ImageGenerator,
-  "speech-to-text": SpeechToTextSection,
-  "text-to-speech": TextToSpeechSection,
-  "voice-chat": VoiceChatSection,
-};

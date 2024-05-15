@@ -5,7 +5,7 @@ import SpeechToTextSection from "../components/SpeechToTextSection";
 import TextToSpeechSection from "../components/TextToSpeechSection";
 import VoiceChatSection from "../components/VoiceChatSection";
 
-export default function Home() {
+export default function Demo() {
   return (
     <section className="layout">
       <p className="text-xl text-gray-300 mb-12">

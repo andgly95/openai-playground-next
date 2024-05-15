@@ -24,6 +24,7 @@ export type Player = {
 export type SubmittedPrompt = {
   player_id: string;
   prompt: string;
+  image_url: string;
 };
 
 export type SubmittedGuess = {
@@ -176,44 +177,44 @@ const GameComponent = () => {
 
   return (
     <GlassmorphicCard
-      className="container mx-auto p-8 max-w-lg bg-white/30 backdrop-blur-md rounded-xl shadow-lg"
-      title="Game Component"
+      className="container mx-auto p-8 max-w-2xl bg-white/30 backdrop-blur-md rounded-xl shadow-lg"
+      title="ImagiChat Game"
     >
       {!userId && (
-        <div className="mb-6">
+        <div className="mb-8">
           <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2 mr-2 focus:outline-none focus:border-blue-500"
+            className="border border-gray-300 rounded-lg px-4 py-2 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             onClick={handleCreateUser}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200"
           >
             Create User
           </button>
         </div>
       )}
-      <div className="mb-6">
-        <p className="text-gray-700 mb-2">
+      <div className="mb-8">
+        <p className="text-gray-700 text-lg mb-2">
           <strong>User ID:</strong> {userId}
         </p>
-        <p className="text-gray-700 mb-2">
+        <p className="text-gray-700 text-lg mb-2">
           <strong>Token:</strong> {token}
         </p>
         {gameUuid && (
-          <p className="text-gray-700">
+          <p className="text-gray-700 text-lg">
             <strong>Game UUID:</strong> {gameUuid}
           </p>
         )}
       </div>
       {!gameState && (
-        <div className="mb-6">
+        <div className="mb-8">
           <button
             onClick={handleCreateGame}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg mr-2 transition-colors duration-200"
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-lg mr-4 transition-colors duration-200"
           >
             Create Game
           </button>
@@ -222,33 +223,43 @@ const GameComponent = () => {
             placeholder="Game Code"
             value={gameCode}
             onChange={(e) => setGameCode(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2 mr-2 focus:outline-none focus:border-blue-500"
+            className="border border-gray-300 rounded-lg px-4 py-2 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             onClick={handleJoinGame}
-            className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+            className="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200"
           >
             Join Game
           </button>
         </div>
       )}
       {gameState && (
-        <div className="bg-white p-6 rounded-lg shadow-md flex flex-col gap-4">
-          <h2 className="text-xl font-semibold">Game State - {gameCode}</h2>
-          <strong>Status: {gameState?.status}</strong>
-          <div>
-            <p className="font-medium">Players:</p>
-            <ul className="bg-neutral-300 rounded-lg p-3 mt-2">
+        <div className="bg-white p-8 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-semibold mb-4">
+            Game State - {gameCode}
+          </h2>
+          <p className="text-lg font-medium mb-4">
+            Status: {gameState?.status}
+          </p>
+          <div className="mb-6">
+            <p className="text-lg font-medium mb-2">Players:</p>
+            <ul className="bg-neutral-100 rounded-lg p-4">
               {gameState.players?.map((player) => (
-                <li key={player.id}>
-                  <span>{player.username}</span> -{" "}
-                  <span>{player.ready ? "Ready" : "Not Ready"}</span>
+                <li key={player.id} className="mb-2">
+                  <span className="font-semibold">{player.username}</span> -{" "}
+                  <span
+                    className={`${
+                      player.ready ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    {player.ready ? "Ready" : "Not Ready"}
+                  </span>
                 </li>
               ))}
             </ul>
           </div>
           <button
-            className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+            className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200"
             onClick={handlePlayerReady}
           >
             Ready
@@ -256,17 +267,17 @@ const GameComponent = () => {
         </div>
       )}
       {gameState?.status === "imagining" && (
-        <div className="mt-4">
-          <h2 className="text-xl font-semibold mb-2">Submit Prompt</h2>
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Submit Prompt</h2>
           <input
             type="text"
             placeholder="Prompt"
             value={promptInput}
             onChange={(e) => setPromptInput(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2 mr-2 focus:outline-none focus:border-blue-500"
+            className="border border-gray-300 rounded-lg px-4 py-2 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200"
             onClick={handleSubmitPrompt}
           >
             Submit Prompt
@@ -274,17 +285,24 @@ const GameComponent = () => {
         </div>
       )}
       {gameState?.status === "guessing" && (
-        <div className="mt-4">
-          <h2 className="text-xl font-semibold mb-2">Submit Guess</h2>
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Submit Guess</h2>
+          <div className="mb-4">
+            <img
+              src={gameState.current_image}
+              alt="Generated Image"
+              className="w-full rounded-lg shadow-md"
+            />
+          </div>
           <input
             type="text"
             placeholder="Guess"
             value={guessInput}
             onChange={(e) => setGuessInput(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2 mr-2 focus:outline-none focus:border-blue-500"
+            className="border border-gray-300 rounded-lg px-4 py-2 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200"
             onClick={handleSubmitGuess}
           >
             Submit Guess
@@ -292,8 +310,8 @@ const GameComponent = () => {
         </div>
       )}
       {message && (
-        <div className="bg-gray-100 p-6 mt-6 rounded-lg text-center shadow-inner">
-          <p>{message}</p>
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 mt-8 rounded-lg">
+          <p className="font-medium">{message}</p>
         </div>
       )}
     </GlassmorphicCard>

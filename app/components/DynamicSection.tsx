@@ -63,11 +63,11 @@ const DynamicSection = () => {
           <div className="flex flex-col bg-white rounded mt-4">
             {ComponentsArray.map((comp) => (
               <button
-                className="p-4"
+                className="px-4 py-2 hover:bg-gray-100 text-left flex items-center gap-4"
                 key={comp.id}
                 onClick={() => addComponent(comp)}
               >
-                {comp.icon} {comp.name}
+                <span>{comp.icon}</span> <span>{comp.name}</span>
               </button>
             ))}
           </div>
@@ -75,10 +75,7 @@ const DynamicSection = () => {
       >
         <button
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          className={
-            "bg-white text-black p-2 rounded-full " +
-            (!!components.length && " fixed bottom-4 right-4")
-          }
+          className={"bg-white text-black p-2 rounded-full my-4"}
         >
           {isPopoverOpen ? <FaXmark /> : <FaPlus />}
         </button>

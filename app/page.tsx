@@ -1,29 +1,15 @@
-import ChatSection from "./components/ChatSection";
-import ImageGenerator from "./components/ImageGenerator";
-import SpeechToTextSection from "./components/SpeechToTextSection";
-import TextToSpeechSection from "./components/TextToSpeechSection";
-import VoiceChatSection from "./components/VoiceChatSection";
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
-  return (
-    <main className="container mx-auto px-4 py-8 lg:py-16 flex-grow">
-      <section className="layout">
-        <p className="text-xl text-gray-300 mb-12">
-          Unleash your imagination with AI-powered chat and images.
-        </p>
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-1/2 flex flex-col gap-8">
-            <ChatSection />
-            <TextToSpeechSection />
-            <SpeechToTextSection />
-          </div>
+const Home = () => {
+  const router = useRouter();
 
-          <div className="lg:w-1/2 flex flex-col gap-8">
-            <ImageGenerator />
-            <VoiceChatSection />
-          </div>
-        </div>
-      </section>
-    </main>
-  );
-}
+  useEffect(() => {
+    router.push("/demo");
+  }, [router]);
+
+  return null;
+};
+
+export default Home;

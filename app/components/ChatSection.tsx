@@ -292,7 +292,7 @@ const ChatSection: React.FC = () => {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={(e) => {
-              !e.ctrlKey && e.key === "Enter" && handleSendMessage();
+              !e.shiftKey && e.key === "Enter" && handleSendMessage();
             }}
             className={`w-full border border-gray-300 bg-neutral-200 px-4 py-2 rounded-l-md ${
               isLoading && "opacity-50 cursor-not-allowed"

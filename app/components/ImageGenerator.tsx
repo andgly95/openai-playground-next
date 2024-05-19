@@ -70,7 +70,7 @@ const ImageGenerator: React.FC = () => {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           onKeyDown={(e) => {
-            e.key === "Enter" && handleGenerateImage();
+            !e.shiftKey && e.key === "Enter" && handleGenerateImage();
           }}
           className="w-full border border-gray-300 p-4 pb-16 rounded-md"
           placeholder="Enter a prompt for the image generator"

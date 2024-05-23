@@ -6,14 +6,15 @@ import ReactMarkdown from "react-markdown";
 import { FaXmark } from "react-icons/fa6";
 import GlassmorphicCard from "./GlassmorphicCard";
 import { TextToSpeechItem } from "./TextToSpeechSection";
+import { GuessScore } from "./GuessScoreSection";
 
-type HistoryItem = Conversation | string | TextToSpeechItem;
+type HistoryItem = Conversation | string | TextToSpeechItem | GuessScore;
 
 interface HistorySectionProps {
   title: string;
   history: HistoryItem[];
   showHistory: boolean;
-  type: "chat" | "image" | "tts";
+  type: "chat" | "image" | "tts" | "guess";
   setShowHistory: (show: boolean) => void;
   clearHistory: () => void;
   onItemClick?: (item: HistoryItem) => void;
@@ -192,6 +193,51 @@ const HistorySection: React.FC<HistorySectionProps> = ({
                   </div>
                 </div>
                 <audio src={ttsItem.audioUrl} controls className="mt-4" />
+              </div>
+            </div>
+          );
+        })}
+      {showHistory &&
+        type === "guess" &&
+        history.map((item) => {
+          const guessScore = item as GuessScore;
+          return (
+            <div
+              className="bg-gray-800 rounded-lg max-h-60 overflow-y-auto mb-4"
+              key={guessScore.id}
+            >
+              <div className="bg-gray-700 px-4 py-2 rounded-t-lg flex items-center">
+                <span className="text-sm text-gray-300">
+                  {formatTimestamp(guessScore.timestamp)}
+                </span>
+                <button
+                  type="button"
+                  className="bg-red-500 p-1 ml-auto rounded-full"
+                  onClick={() => onDeleteItem && onDeleteItem(guessScore)}
+                >
+                  <FaXmark size={16} />
+                </button>
+              </div>
+              <div
+                className="p-4 cursor-pointer"
+                onClick={() => onItemClick && onItemClick(guessScore)}
+              >
+                <div className="mb-2">
+                  <strong className="text-sm font-mono text-gray-400">
+                    Guess:
+                  </strong>
+                  <div className="text-gray-300 text-sm ml-4">
+                    {guessScore.guess}
+                  </div>
+                </div>
+                <div>
+                  <strong className="text-sm font-mono text-gray-400">
+                    Score:
+                  </strong>
+                  <div className="text-gray-300 text-sm ml-4">
+                    {guessScore.score}
+                  </div>
+                </div>
               </div>
             </div>
           );

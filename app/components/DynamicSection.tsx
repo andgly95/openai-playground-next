@@ -36,6 +36,12 @@ const ComponentsArray = [
     component: dynamic(() => import("./VoiceChatSection")),
     icon: "🗣️",
   },
+  {
+    id: 6,
+    name: "Guess Scoring",
+    component: dynamic(() => import("./GuessScoreSection")),
+    icon: "🎯",
+  },
 ];
 
 const DynamicSection = () => {

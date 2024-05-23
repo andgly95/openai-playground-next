@@ -219,6 +219,13 @@ const ChatSection: React.FC = () => {
     saveConversation(updatedMessages);
   };
 
+  const handleMessageDelete = (index: number) => {
+    const updatedMessages = messages.filter((_, i) => i !== index);
+    setMessages(updatedMessages);
+    saveConversation(updatedMessages);
+    setEditingMessageIndex(null);
+  };
+
   return (
     <div className="flex flex-col w-full gap-8">
       <GlassmorphicCard title="Chat with AI">
@@ -275,11 +282,19 @@ const ChatSection: React.FC = () => {
                 </div>
 
                 {editingMessageIndex === index ? (
-                  <textarea
-                    value={message.content}
-                    onChange={(e) => handleMessageEdit(index, e.target.value)}
-                    className="w-full bg-neutral-600 text-white px-4 py-2 rounded-md"
-                  ></textarea>
+                  <>
+                    <textarea
+                      value={message.content}
+                      onChange={(e) => handleMessageEdit(index, e.target.value)}
+                      className="w-full bg-neutral-600 text-white px-4 py-2 rounded-md"
+                    ></textarea>
+                    <button
+                      onClick={() => handleMessageDelete(index)}
+                      className="text-red-500 hover:text-red-600 ml-4 my-2"
+                    >
+                      Delete
+                    </button>
+                  </>
                 ) : (
                   <div className="text-gray-300 text-sm ml-4">
                     <ReactMarkdown>{message.content}</ReactMarkdown>

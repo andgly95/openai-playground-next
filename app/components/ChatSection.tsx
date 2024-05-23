@@ -39,6 +39,9 @@ const ChatSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isApiError, setIsApiError] = useState(false);
   const [model, setModel] = useState(modelOptions[0]);
+  const [editingMessageIndex, setEditingMessageIndex] = useState<number | null>(
+    null
+  );
   const [showChatHistory, setShowChatHistory] = useState(true);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConversationId, setCurrentConversationId] =
@@ -201,6 +204,21 @@ const ChatSection: React.FC = () => {
     setIsSystemPromptEditable(false);
   };
 
+  const handleMessageClick = (index: number) => {
+    setEditingMessageIndex(editingMessageIndex === index ? null : index);
+  };
+
+  const handleMessageEdit = (index: number, content: string) => {
+    const updatedMessages = messages.map((message, i) => {
+      if (i === index) {
+        return { ...message, content };
+      }
+      return message;
+    });
+    setMessages(updatedMessages);
+    saveConversation(updatedMessages);
+  };
+
   return (
     <div className="flex flex-col w-full gap-8">
       <GlassmorphicCard title="Chat with AI">
@@ -232,7 +250,11 @@ const ChatSection: React.FC = () => {
           )}
           {!isSystemPromptEditable &&
             messages.map((message, index) => (
-              <div key={index} className="mb-4">
+              <div
+                key={index}
+                className="mb-4 rounded-md p-2 hover:bg-neutral-700 transition duration-500 ease-in-out cursor-pointer"
+                onClick={() => handleMessageClick(index)}
+              >
                 <div className="flex items-center mb-1">
                   <span
                     className={`inline-block w-2 h-2 rounded-full mr-2 ${
@@ -251,9 +273,18 @@ const ChatSection: React.FC = () => {
                     {message.role === "assistant" ? "AI" : "User"}
                   </strong>
                 </div>
-                <div className="text-gray-300 text-sm ml-4">
-                  <ReactMarkdown>{message.content}</ReactMarkdown>
-                </div>
+
+                {editingMessageIndex === index ? (
+                  <textarea
+                    value={message.content}
+                    onChange={(e) => handleMessageEdit(index, e.target.value)}
+                    className="w-full bg-neutral-600 text-white px-4 py-2 rounded-md"
+                  ></textarea>
+                ) : (
+                  <div className="text-gray-300 text-sm ml-4">
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                  </div>
+                )}
               </div>
             ))}
           {messages.length > 1 && (

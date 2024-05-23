@@ -260,7 +260,9 @@ const ChatSection: React.FC = () => {
               <div
                 key={index}
                 className="mb-4 rounded-md p-2 hover:bg-neutral-700 transition duration-500 ease-in-out cursor-pointer"
-                onClick={() => handleMessageClick(index)}
+                onClick={() =>
+                  editingMessageIndex == null && handleMessageClick(index)
+                }
               >
                 <div className="flex items-center mb-1">
                   <span
@@ -289,8 +291,14 @@ const ChatSection: React.FC = () => {
                       className="w-full bg-neutral-600 text-white px-4 py-2 rounded-md"
                     ></textarea>
                     <button
+                      onClick={() => handleMessageClick(index)}
+                      className="text-white mx-4 my-2"
+                    >
+                      Update
+                    </button>
+                    <button
                       onClick={() => handleMessageDelete(index)}
-                      className="text-red-500 hover:text-red-600 ml-4 my-2"
+                      className="text-red-500 hover:text-red-600 mx-4 my-2"
                     >
                       Delete
                     </button>

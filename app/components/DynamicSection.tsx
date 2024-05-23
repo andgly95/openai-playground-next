@@ -1,91 +1,123 @@
 "use client";
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import dynamic from "next/dynamic";
-import { Popover } from "react-tiny-popover";
 import { FaXmark } from "react-icons/fa6";
 
 const ComponentsArray = [
   {
     id: 1,
-    name: "Chat with AI",
-    component: dynamic(() => import("./ChatSection")),
-    icon: "💬",
+    name: "Fun and Games",
+    components: [
+      {
+        heading: "Image Generation",
+        subheading: "Create stunning visuals",
+        component: dynamic(() => import("./ImageGenerator")),
+        icon: "🖼️",
+      },
+      {
+        heading: "Guessing Game",
+        subheading: "Test your intuition",
+        component: dynamic(() => import("./GuessScoreSection")),
+        icon: "🎯",
+      },
+    ],
   },
   {
     id: 2,
-    name: "Generate Images",
-    component: dynamic(() => import("./ImageGenerator")),
-    icon: "🖼️",
+    name: "Communication",
+    components: [
+      {
+        heading: "Chat with AI",
+        subheading: "Engage in intelligent conversations",
+        component: dynamic(() => import("./ChatSection")),
+        icon: "💬",
+      },
+    ],
   },
   {
     id: 3,
-    name: "Speech to Text",
-    component: dynamic(() => import("./SpeechToTextSection")),
-    icon: "🎤",
+    name: "Audio Processing",
+    components: [
+      {
+        heading: "Speech to Text",
+        subheading: "Convert speech to written text",
+        component: dynamic(() => import("./SpeechToTextSection")),
+        icon: "🎤",
+      },
+      {
+        heading: "Text to Speech",
+        subheading: "Convert written text to speech",
+        component: dynamic(() => import("./TextToSpeechSection")),
+        icon: "🔊",
+      },
+    ],
   },
   {
     id: 4,
-    name: "Text to Speech",
-    component: dynamic(() => import("./TextToSpeechSection")),
-    icon: "🔊",
-  },
-  {
-    id: 5,
-    name: "Voice Chat",
-    component: dynamic(() => import("./VoiceChatSection")),
-    icon: "🗣️",
-  },
-  {
-    id: 6,
-    name: "Guess Scoring",
-    component: dynamic(() => import("./GuessScoreSection")),
-    icon: "🎯",
+    name: "Real-time Communication",
+    components: [
+      {
+        heading: "Voice Chat",
+        subheading: "Communicate with others using voice",
+        component: dynamic(() => import("./VoiceChatSection")),
+        icon: "🗣️",
+      },
+    ],
   },
 ];
 
 const DynamicSection = () => {
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [components, setComponents] = useState<any[]>([]);
 
-  const addComponent = (component: any) => {
-    setComponents([...components, component]);
-    setIsPopoverOpen(false);
+  const addComponents = (selectedComponents: any[]) => {
+    setComponents([...components, ...selectedComponents]);
+  };
+
+  const removeComponent = (index: number) => {
+    const updatedComponents = [...components];
+    updatedComponents.splice(index, 1);
+    setComponents(updatedComponents);
   };
 
   return (
     <div className="container">
-      <div className="grid grid-cols-2 gap-8">
-        {components.map((Component: any, index: number) => (
-          <div>
-            <Component.component key={index} />
+      <div className="grid grid-cols-2 gap-8 mb-8">
+        {ComponentsArray.map((preset) => (
+          <div
+            key={preset.id}
+            className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-lg hover:bg-neutral-200 transition-shadow duration-300"
+            onClick={() => addComponents(preset.components)}
+          >
+            <h2 className="text-xl font-semibold mb-4">{preset.name}</h2>
+            <ul className="space-y-2">
+              {preset.components.map((component, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="mr-2">{component.icon}</span>
+                  <div>
+                    <h3 className="font-medium">{component.heading}</h3>
+                    <p className="text-gray-500 text-sm">
+                      {component.subheading}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
-      <Popover
-        isOpen={isPopoverOpen}
-        positions={["bottom", "right", "top", "left"]}
-        content={
-          <div className="flex flex-col bg-white rounded mt-4">
-            {ComponentsArray.map((comp) => (
-              <button
-                className="px-4 py-2 hover:bg-gray-100 text-left flex items-center gap-4"
-                key={comp.id}
-                onClick={() => addComponent(comp)}
-              >
-                <span>{comp.icon}</span> <span>{comp.name}</span>
-              </button>
-            ))}
+      <div className="grid grid-cols-2 gap-8">
+        {components.map((Component: any, index: number) => (
+          <div key={index} className="relative">
+            <Component.component />
+            <button
+              onClick={() => removeComponent(index)}
+              className="absolute top-2 right-2 bg-white text-black p-1 rounded-full shadow-md"
+            >
+              <FaXmark />
+            </button>
           </div>
-        }
-      >
-        <button
-          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          className={"bg-white text-black p-2 rounded-full my-4"}
-        >
-          {isPopoverOpen ? <FaXmark /> : <FaPlus />}
-        </button>
-      </Popover>
+        ))}
+      </div>
     </div>
   );
 };

@@ -54,7 +54,7 @@ const VoiceChatSection: React.FC = () => {
     formData.append("model", "whisper-1");
     try {
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/transcribe_speech",
+        "https://8ee0-70-23-243-115.ngrok-free.app/transcribe_speech",
         {
           method: "POST",
           body: formData,
@@ -76,7 +76,7 @@ const VoiceChatSection: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
+        "https://8ee0-70-23-243-115.ngrok-free.app/generate_chat",
         {
           method: "POST",
           headers: {
@@ -112,7 +112,7 @@ const VoiceChatSection: React.FC = () => {
   const handleGenerateSpeech = async (text: string) => {
     try {
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/generate_speech",
+        "https://8ee0-70-23-243-115.ngrok-free.app/generate_speech",
         {
           method: "POST",
           headers: {

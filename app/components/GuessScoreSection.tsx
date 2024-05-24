@@ -26,7 +26,7 @@ const GuessScoreSection: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/score_guess",
+        "https://8ee0-70-23-243-115.ngrok-free.app/score_guess",
         {
           method: "POST",
           headers: {

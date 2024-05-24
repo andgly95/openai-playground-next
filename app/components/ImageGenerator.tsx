@@ -29,7 +29,7 @@ const ImageGenerator: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/generate_image",
+        "https://8ee0-70-23-243-115.ngrok-free.app/generate_image",
         {
           method: "POST",
           headers: {

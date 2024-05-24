@@ -38,7 +38,7 @@ const TextToSpeechSection: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/generate_speech",
+        "https://8ee0-70-23-243-115.ngrok-free.app/generate_speech",
         {
           method: "POST",
           headers: {

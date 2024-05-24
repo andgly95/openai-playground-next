@@ -52,7 +52,7 @@ const SpeechToTextSection: React.FC = () => {
 
     try {
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/transcribe_speech",
+        "https://8ee0-70-23-243-115.ngrok-free.app/transcribe_speech",
         {
           method: "POST",
           body: formData,

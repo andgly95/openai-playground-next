@@ -115,7 +115,7 @@ const ChatSection: React.FC = () => {
       }
       setIsLoading(true);
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
+        "https://8ee0-70-23-243-115.ngrok-free.app/generate_chat",
         {
           method: "POST",
           headers: {
@@ -156,7 +156,7 @@ const ChatSection: React.FC = () => {
     setMessages([...messages, newMessage]);
     try {
       const response = await fetch(
-        "https://f759-70-23-243-115.ngrok-free.app/generate_chat",
+        "https://8ee0-70-23-243-115.ngrok-free.app/generate_chat",
         {
           method: "POST",
           headers: {

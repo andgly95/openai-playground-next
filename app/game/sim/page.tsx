@@ -1,5 +1,5 @@
 import React from "react";
-import { GameScreen } from "./GameScreen";
+import { GameScreen } from "./components/GameScreen";
 
 const SimulationPage: React.FC = () => {
   return (

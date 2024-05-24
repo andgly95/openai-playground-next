@@ -1,6 +1,6 @@
 // GuessingScreen.tsx
 import React, { useState } from "react";
-import { Player } from "./types";
+import { Player } from "../types";
 
 interface GuessingScreenProps {
   players: Player[];

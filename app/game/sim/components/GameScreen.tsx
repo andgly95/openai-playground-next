@@ -1,40 +1,45 @@
+// GameScreen.tsx
 "use client";
-import React, { useEffect, useState } from "react";
-import { GameState } from "./types";
-import { MockServer } from "./mockServer";
+
+import React, { useEffect, useReducer } from "react";
+import { GameState } from "../types";
 import { WaitingScreen } from "./WaitingScreen";
 import { ImaginingScreen } from "./ImaginingScreen";
 import { GuessingScreen } from "./GuessingScreen";
 import { GameOverScreen } from "./GameOverScreen";
 import { PlayerList } from "./PlayerList";
+import { gameReducer } from "../gameReducer";
+
+const initialGameState: GameState = {
+  game_id: `game${Math.random().toString(36).substring(7)}`,
+  status: "waiting",
+  current_round: 0,
+  total_rounds: 5,
+  players: [],
+  current_prompt: "",
+  current_image: "",
+  submitted_prompts: [],
+  submitted_guesses: [],
+};
 
 export const GameScreen: React.FC = () => {
-  const [gameState, setGameState] = useState(new MockServer().getGameState());
-  const mockServer = React.useRef(new MockServer()).current;
+  const [gameState, dispatch] = useReducer(gameReducer, initialGameState);
 
   const handleJoinGame = () => {
     const playerId = `player${Math.random().toString(36).substring(7)}`;
     const playerName = `Player ${playerId}`;
-    mockServer.joinGame(playerId, playerName);
-    setGameState(mockServer.getGameState());
-  };
-
-  const checkAndStartGame = (newGameState: GameState) => {
-    if (newGameState.players.length >= 5) {
-      mockServer.startGame();
-      setGameState(mockServer.getGameState());
-    }
+    dispatch({ type: "JOIN_GAME", payload: { playerId, playerName } });
   };
 
   useEffect(() => {
-    const newGameState = mockServer.getGameState();
-    checkAndStartGame(newGameState);
+    if (gameState.players.length >= 5) {
+      dispatch({ type: "START_GAME" });
+    }
   }, [gameState.players.length]);
 
   const handleSubmitPrompt = (prompt: string) => {
     const playerId = gameState.players[gameState.submitted_prompts.length].id;
-    mockServer.submitPrompt(playerId, prompt);
-    setGameState(mockServer.getGameState());
+    dispatch({ type: "SUBMIT_PROMPT", payload: { playerId, prompt } });
   };
 
   const handleSubmitGuess = (targetPlayerId: string, guess: string) => {
@@ -42,8 +47,10 @@ export const GameScreen: React.FC = () => {
       (player) => !gameState.submitted_guesses.some(([id]) => id === player.id)
     )?.id;
     if (playerId) {
-      mockServer.submitGuess(playerId, targetPlayerId, guess);
-      setGameState(mockServer.getGameState());
+      dispatch({
+        type: "SUBMIT_GUESS",
+        payload: { playerId, targetPlayerId, guess },
+      });
     }
   };
 

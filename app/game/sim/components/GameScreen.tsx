@@ -55,7 +55,7 @@ export const GameScreen: React.FC = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex gap-4">
       <div className="w-1/4">
         <PlayerList players={gameState.players} />
       </div>

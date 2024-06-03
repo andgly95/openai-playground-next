@@ -83,6 +83,7 @@ const ChatSection: React.FC = () => {
     const newConversationId = `conversation_${Date.now()}`;
     setCurrentConversationId(newConversationId);
     setMessages([]);
+    setEditingMessageIndex(null);
     fetchInitialMessage();
   };
 

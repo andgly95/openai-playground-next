@@ -64,23 +64,23 @@ const GuessScoreSection: React.FC = () => {
             <label htmlFor="prompt" className="block text-white mb-2">
               Prompt:
             </label>
-            <textarea
+            <input
               id="prompt"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               className="w-full bg-neutral-600 text-white px-4 py-2 rounded-md"
-            ></textarea>
+            />
           </div>
           <div className="mb-4">
             <label htmlFor="guess" className="block text-white mb-2">
               Guess:
             </label>
-            <textarea
+            <input
               id="guess"
               value={guess}
               onChange={(e) => setGuess(e.target.value)}
               className="w-full bg-neutral-600 text-white px-4 py-2 rounded-md"
-            ></textarea>
+            />
           </div>
           <button
             onClick={handleScoreGuess}
